@@ -1,0 +1,51 @@
+package com.xupu.common;
+
+import java.io.File;
+import java.util.List;
+
+/**
+ * 一般工具类
+ */
+public class Tool {
+    /**
+     * 检查集合是否为空
+     *
+     * @param list
+     * @return
+     */
+    public static boolean IsEmpty(List list) {
+        return list == null || list.isEmpty() ? true : false;
+    }
+
+    /**
+     * 获取本机ip地址
+     *
+     * @return
+     */
+    public static String getHostAddress() {
+        String hostAddress = "http://192.168.2.47:8080/";
+        return hostAddress;
+    }
+
+
+    /**
+     * 检查文件夹是否存在
+     *
+     * @param dirPath   文件路径
+     * @param isCreated 如果没有是否创建
+     */
+    public static boolean exitsDir(String dirPath, boolean isCreated) {
+        File file = new File(dirPath);
+        if (file.exists()) {
+            return true;
+        } else {
+            if (isCreated) {
+                boolean bl = file.mkdirs();
+                return bl;
+            }
+        }
+        return false;
+    }
+
+
+}
