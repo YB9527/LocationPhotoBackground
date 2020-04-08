@@ -1,18 +1,12 @@
 package com.xupu.cbd.controller;
 
 
-import com.xupu.cbd.po.Person;
-import com.xupu.cbd.po.Photo;
 import com.xupu.common.FileTool;
 import com.xupu.common.SpringBootTool;
-import org.json.JSONObject;
 import org.junit.Test;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import sun.awt.SunGraphicsCallback;
-import sun.plugin.javascript.JSObject;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -21,9 +15,6 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -115,11 +106,7 @@ public class PhotoController {
 
 
 
-    @RequestMapping(value = "/demo1", method = RequestMethod.POST)
-    public String add(@RequestBody Person params) {
 
-        return "redirect:upload_status";
-    }
 
     @RequestMapping(value = "pic")
     public void queryPic(@RequestParam(required = false) String adress, HttpServletRequest request, HttpServletResponse response) throws IOException {

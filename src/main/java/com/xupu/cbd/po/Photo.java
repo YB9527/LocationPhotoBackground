@@ -2,29 +2,41 @@ package com.xupu.cbd.po;
 
 import com.xupu.common.FileTool;
 
+import javax.persistence.*;
+
+
 public class Photo {
+
+    private Long id;
+
     private String path;
+
     private String name;
+
     private String describe;
-    private Integer id;
+
+
+    public Photo() {
+    }
+
     public Photo(String path, String name, String describe) {
         this.path = path;
         this.name = name;
         this.describe = describe;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
     public void setPath(String path) {
 
         this.path = path;
-        setName(FileTool.getFileName(path));
+        //setName(FileTool.getFileName(path));
     }
 
     public void setName(String name) {

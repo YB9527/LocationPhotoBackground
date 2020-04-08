@@ -1,21 +1,31 @@
 package com.xupu.cbd.po;
 
+import javax.persistence.*;
 import java.util.List;
 
+@Entity
 public class DK {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String mDKBM;
+
     private String mDKMC;
-    private int id;
-    private List<Photo> photos;
+
+    //private List<Photo> photos;
+
+
     public DK() {
 
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
     public DK(String mDKBM, String mDKMC) {
@@ -39,13 +49,13 @@ public class DK {
         this.mDKMC = mDKMC;
     }
 
-    public List<Photo> getPhotos() {
+   /* public List<Photo> getPhotos() {
         return photos;
     }
 
     public void setPhotos(List<Photo> photos) {
         this.photos = photos;
-    }
+    }*/
 
     @Override
     public String toString() {
@@ -55,4 +65,5 @@ public class DK {
                 ", id=" + id +
                 '}';
     }
+
 }
