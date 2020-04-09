@@ -1,4 +1,4 @@
-package com.xupu.cbd.po;
+package com.xupu.zjd.po;
 
 import javax.persistence.*;
 

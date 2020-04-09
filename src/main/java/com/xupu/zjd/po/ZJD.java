@@ -1,23 +1,30 @@
-package com.xupu.cbd.po;
+package com.xupu.zjd.po;
+
+import com.google.gson.annotations.Expose;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class DK {
-
+public class ZJD {
+    @Expose
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Column(nullable = false)
+    @Expose
     private String mDKBM;
-
+    @Column(nullable = false)
+    @Expose
     private String mDKMC;
 
-    //private List<Photo> photos;
+    @OneToMany(mappedBy = "zjd",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+    @Expose
+    private List<Photo> photos;
 
 
-    public DK() {
+    public ZJD() {
 
     }
 
@@ -28,9 +35,20 @@ public class DK {
     public void setId(Long id) {
         this.id = id;
     }
-    public DK(String mDKBM, String mDKMC) {
+    public ZJD(String mDKBM, String mDKMC) {
         this.mDKBM = mDKBM;
         this.mDKMC = mDKMC;
+    }
+
+    public List<Photo> getPhotos() {
+        if(photos == null){
+            photos = new ArrayList<>();
+        }
+        return photos;
+    }
+
+    public void setPhotos(List<Photo> photos) {
+        this.photos = photos;
     }
 
     public String getmDKBM() {
@@ -59,7 +77,7 @@ public class DK {
 
     @Override
     public String toString() {
-        return "DK{" +
+        return "ZJD{" +
                 "mDKBM='" + mDKBM + '\'' +
                 ", mDKMC='" + mDKMC + '\'' +
                 ", id=" + id +

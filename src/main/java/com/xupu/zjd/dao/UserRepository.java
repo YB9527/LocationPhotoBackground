@@ -1,7 +1,8 @@
-package com.xupu.cbd.dao;
+package com.xupu.zjd.dao;
 
-import com.xupu.cbd.po.User;
+import com.xupu.zjd.po.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+
 
 public interface UserRepository extends JpaRepository<User,Long> {
 

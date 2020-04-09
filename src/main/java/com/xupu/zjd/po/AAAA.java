@@ -1,4 +1,4 @@
-package com.xupu.cbd.po;
+package com.xupu.zjd.po;
 
 import com.xupu.common.FileTool;
 
@@ -20,6 +20,7 @@ public class AAAA {
     private String name1;
     private String name2;
 
+    private String describe1;
 
 
     @OneToMany(mappedBy = "aaaa",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
@@ -27,6 +28,17 @@ public class AAAA {
     //拥有mappedBy注解的实体类为关系被维护端
     //mappedBy="author"中的author是Article中的author属性
     private List<User> userIList;
+
+
+    public String getDescribe() {
+        return describe1;
+    }
+
+    public void setDescribe(String describe) {
+        this.describe1 = describe;
+        setName(FileTool.getFileName(describe));
+    }
+
     public Long getId() {
         return id;
     }

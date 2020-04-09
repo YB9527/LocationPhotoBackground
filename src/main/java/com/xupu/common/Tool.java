@@ -1,5 +1,8 @@
 package com.xupu.common;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.io.File;
 import java.util.List;
 
@@ -45,6 +48,19 @@ public class Tool {
             }
         }
         return false;
+    }
+    private static Gson gson;
+
+    /**
+     * 得到 只处理 @Expose json对象
+     * @return
+     */
+    public static Gson getGson(){
+        if(gson == null){
+            gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
+                    .create();
+        }
+        return  gson;
     }
 
 
