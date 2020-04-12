@@ -140,13 +140,13 @@ public class PhotoService implements IPhotoService {
      * @return
      */
     private String getFileNameyAndroidPath(String androidPath) {
-        String flag = "com.xp/cache";
+        String flag = "com.xp/files";
         String name = androidPath.substring(androidPath.lastIndexOf("/")+1);
         return  name;
     }
     //通过安卓保存的路径 得到 宅基地编码  /storage/emulated/0/Android/data/com.xp/cache/zjd/zjdphoto/2/临时照片3333.jpg
     private String getDKBMByAndroidPath(String androidPath) {
-        String flag = "com.xp/cache/zjd/zjdphoto/";
+        String flag = "zjd/zjdphoto/";
         int start = androidPath.indexOf(flag)+flag.length();
         int end = androidPath.indexOf("/",start);
         String dkbm = androidPath.substring(start,end);
