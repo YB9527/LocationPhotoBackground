@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface IPhotoService {
+    /**
+     * 存照片的根路径
+     */
     public static String dkPhotoDir = SpringBootTool.getRootDir() + "zjd/zjdphoto/";
     public String getPhotoNativePath(Photo photo,ZJD zjd);
     void deletePhoto(ZJD zjd,Photo photo);

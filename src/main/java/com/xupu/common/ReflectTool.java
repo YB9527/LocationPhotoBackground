@@ -8,6 +8,21 @@ import java.util.List;
 import java.util.Map;
 
 public class ReflectTool {
+
+    private static  ReflectTool reflectTool;
+    public static ReflectTool getInstance(){
+        if(reflectTool == null){
+            reflectTool = new ReflectTool();
+        }
+        return  reflectTool;
+    }
+    /**
+     *
+     * @param methodName map 的主键值 ，T对象的 methodName 不允许重复
+     * @param list
+     * @param <T>
+     * @return
+     */
     public  static  <T> Map<String, T> getIDMap(String methodName,List<T> list) {
         Map<String, T> map = new HashMap<>();
         if(Tool.IsEmpty(list)){
@@ -32,7 +47,7 @@ public class ReflectTool {
     /**
      * 包含 get方法 、 set方法集合
      */
-    class  MethodCustom<T>{
+    public  static class  MethodCustom<T>{
         public  MethodCustom(){
             Class<T> tClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
             getMethods =new ArrayList<>();
@@ -68,5 +83,30 @@ public class ReflectTool {
 
             this.setMehods = setMehods;
         }
+
     }
+
+    /**
+     * 创建实例化对象
+     * @param <T>
+     * @return
+     */
+    public static  <T> T getInstanceOfT()
+    {
+
+        ParameterizedType superClass =  (ParameterizedType) getInstance().getClass().getGenericSuperclass();
+        Class<T> type = (Class<T>) superClass.getActualTypeArguments()[0];
+        try
+        {
+            return type.newInstance();
+        }
+        catch (Exception e)
+        {
+            // Oops, no default constructor
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
 }

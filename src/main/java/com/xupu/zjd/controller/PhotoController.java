@@ -43,6 +43,12 @@ public class PhotoController {
     @Autowired
     private IZJDService zjdService;
 
+    /**
+     * 删除照片
+     * @param photo 被删除的照片
+     * @param zjd  zjd中的 照片
+     * @return
+     */
     @PostMapping("/deletePhoto")
     @ResponseBody
     public boolean deletePhoto(String photo, String zjd) {
@@ -53,6 +59,12 @@ public class PhotoController {
         return true;
     }
 
+    /**
+     * 修改照片信息
+     * @param photo
+     * @param zjd
+     * @return
+     */
     @PostMapping("/updatephoto")
     @ResponseBody
     public boolean updatePhoto(String photo, String zjd) {
@@ -64,6 +76,12 @@ public class PhotoController {
     }
 
 
+    /**
+     * 多个照片上传
+     * @param uploadFiles
+     * @param request
+     * @return
+     */
     @RequestMapping("/uploads")
     public String upload(MultipartFile[] uploadFiles, HttpServletRequest request) {
         MultipartHttpServletRequest params = ((MultipartHttpServletRequest) request);
@@ -72,6 +90,7 @@ public class PhotoController {
         List<ZJD> zjds = photoService.savePhotoFile(map);
         return Tool.getGson().toJson(zjds);
     }
+
 
     @RequestMapping(value = "/zjdphotodowload")
     public void downloadFile(@RequestParam(name = "dkbm") String dkbm, @RequestParam(name = "photoname") String photoname, HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -141,6 +160,13 @@ public class PhotoController {
         return "0";
     }
 
+    /**
+     * 上传照片
+     * @param srcFile
+     * @param photo
+     * @param redirectAttributes
+     * @return
+     */
     @PostMapping("/upload11")
     public String fileUpload(@RequestParam("file") MultipartFile srcFile, @RequestBody Photo photo, RedirectAttributes redirectAttributes) {
         //前端没有选择文件，srcFile为空

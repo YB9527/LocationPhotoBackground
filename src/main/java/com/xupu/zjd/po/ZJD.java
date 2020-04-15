@@ -23,11 +23,20 @@ public class ZJD {
     @Expose
     private List<Photo> photos;
 
+    @Expose
+    @OneToMany(mappedBy = "zjdGeometry",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+    private  List<ZJDGeometry> zjdGeometry;//考虑多部件情况
 
-    public ZJD() {
 
+    public List<ZJDGeometry> getZjdGeometry() {
+        return zjdGeometry;
     }
 
+    public void setZjdGeometry(List<ZJDGeometry> zjdGeometry) {
+        this.zjdGeometry = zjdGeometry;
+    }
+   public ZJD() {
+   }
     public Long getId() {
         return id;
     }

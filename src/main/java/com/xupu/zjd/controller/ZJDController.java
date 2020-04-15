@@ -3,22 +3,23 @@ package com.xupu.zjd.controller;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.xupu.common.FileTool;
 import com.xupu.common.Tool;
 import com.xupu.zjd.po.ZJD;
 import com.xupu.zjd.po.Photo;
 import com.xupu.zjd.service.IZJDService;
 import com.xupu.zjd.service.IPhotoService;
+import com.xupu.zjd.service.ZJDService;
 import jdk.internal.org.objectweb.asm.tree.InsnList;
+import org.apache.coyote.Response;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +33,20 @@ public class ZJDController {
 
 
 
+    @RequestMapping(value = "/downloadGeodatabase")
+    public void downloadFile(String geodatabaseName, HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        FileTool.DownLoadFile(response, ZJDService.geodatabasesDir + geodatabaseName);
+
+    }
+
+    /**
+     * 查询所有地块
+     * @param request
+     * @param response
+     * @return
+     * @throws IOException
+     */
     @RequestMapping(value = "/findall")
     public String  findAll(HttpServletRequest request, HttpServletResponse response) throws IOException {
         List<ZJD> zjds =  zjdService.findAll();
@@ -40,6 +55,11 @@ public class ZJDController {
         return gson.toJson(zjds);
     }
 
+    /**
+     * 保存地块
+     * @param request
+     * @param response
+     */
     @RequestMapping(value = "/savedks")
     public void saveDKs(HttpServletRequest request, HttpServletResponse response) {
         List<ZJD> ZJDS = new ArrayList<>();

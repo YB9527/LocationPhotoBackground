@@ -1,8 +1,8 @@
 package com.xupu.common;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.nio.channels.FileChannel;
 
 /**
@@ -148,5 +148,50 @@ public class FileTool {
     public static boolean exitsDir(String dir, boolean isCreated) {
         File  f = new File(dir);
         return  exitsDir(f,isCreated);
+    }
+
+    /**
+     *下载文件
+     * @param response
+     * @param filePath 文件路径
+     */
+    public static void DownLoadFile(HttpServletResponse response, String filePath)  {
+
+        response.reset();
+        //response.setContentType("application/x-msdownload;charset=utf-8");
+        //response.setContentType("image/png");
+        try {
+            InputStream f = new FileInputStream(filePath);
+            response.setHeader("Content-Disposition", "attachment;filename=" + new String((FileTool.getFileName(filePath)).getBytes("gbk"), "iso-8859-1"));//下载文件的名称
+            ServletOutputStream sout = response.getOutputStream();
+            BufferedInputStream bis = null;
+            BufferedOutputStream bos = null;
+            try {
+                bis = new BufferedInputStream(f);
+                bos = new BufferedOutputStream(sout);
+                byte[] buff = new byte[2048];
+                int bytesRead;
+                while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {
+                    bos.write(buff, 0, bytesRead);
+                }
+                bos.flush();
+                bos.close();
+                bis.close();
+            } catch (final IOException e) {
+                throw e;
+            } finally {
+                if (bis != null) {
+                    bis.close();
+                }
+                if (bos != null) {
+                    bos.close();
+                }
+            }
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }catch (IOException e2) {
+            e2.printStackTrace();
+        }
+
     }
 }
