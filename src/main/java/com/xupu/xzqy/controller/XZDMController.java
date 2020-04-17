@@ -2,6 +2,9 @@ package com.xupu.xzqy.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.xupu.common.Tool;
+import com.xupu.common.po.ResultData;
+import com.xupu.common.po.Status;
 import com.xupu.xzqy.po.XZDM;
 import com.xupu.xzqy.service.IXZDMService;
 import com.xupu.zjd.po.ZJD;
@@ -18,14 +21,15 @@ public class XZDMController{
     IXZDMService xzdmService;
 
     /**
-     * 查询所有地块
+     * 查询所有 行政代码
      * @return
      */
     @RequestMapping(value = "/findall")
-    public List<XZDM>  findAll() {
+    public ResultData  findAll() {
         List<XZDM> xzdms =  xzdmService.findAll();
-        return xzdms;
+        return  new ResultData(Status.Success,"成功",Tool.getGson().toJson(xzdms));
     }
+
 
 
 }

@@ -28,6 +28,15 @@ public class Redis {
     @Expose
     private String json;
 
+    public Redis() {
+
+    }
+    public Redis(Long userId, String mark, String json) {
+        this.userId = userId;
+        this.mark = mark;
+        this.json = json;
+    }
+
     public Long getId() {
         return id;
     }

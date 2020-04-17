@@ -8,6 +8,8 @@ class LocationphotobackgroundApplicationTests {
 
     @Test
     void contextLoads() {
+        String aa = "dfdf";
+        Long l = Long.parseLong(aa);
     }
 
 }
