@@ -32,4 +32,6 @@ public interface ZJDRepository extends JpaRepository<ZJD,Long> {
 
     @Override
     Optional<ZJD> findById(Long aLong);
+
+    List<ZJD> findByZDNUM(String ZDNUM);
 }

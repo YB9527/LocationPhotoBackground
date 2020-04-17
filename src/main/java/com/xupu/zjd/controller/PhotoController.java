@@ -93,10 +93,10 @@ public class PhotoController {
 
 
     @RequestMapping(value = "/zjdphotodowload")
-    public void downloadFile(@RequestParam(name = "dkbm") String dkbm, @RequestParam(name = "photoname") String photoname, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void downloadFile(@RequestParam(name = "ZDNUM") String ZDNUM, @RequestParam(name = "photoname") String photoname, HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 
-        InputStream f = new FileInputStream(photoService.dkPhotoDir + dkbm + "/" + photoname);
+        InputStream f = new FileInputStream(photoService.dkPhotoDir + ZDNUM + "/" + photoname);
 
 
         response.reset();

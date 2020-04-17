@@ -24,7 +24,7 @@ public class ZJDService implements IZJDService {
 
     @Override
     public void saveAll(List<ZJD> ZJDS) {
-        if(!Tool.IsEmpty(ZJDS)){
+        if(!Tool.isEmpty(ZJDS)){
             zjdRepository.saveAll(ZJDS);
         }
 
@@ -39,7 +39,7 @@ public class ZJDService implements IZJDService {
 
     @Override
     public void delete(List<ZJD> ZJDS) {
-        if(!Tool.IsEmpty(ZJDS)){
+        if(!Tool.isEmpty(ZJDS)){
             zjdRepository.deleteAll(ZJDS);
         }
 
@@ -51,6 +51,15 @@ public class ZJDService implements IZJDService {
         }
         ZJD zjd =  zjdRepository.findById(id).get();
         return zjd;
+    }
+
+    @Override
+    public ZJD findByZDNUM(String zdnum) {
+        List<ZJD> zjds =  zjdRepository.findByZDNUM(zdnum);
+        if(!Tool.isEmpty(zjds)){
+            return  zjds.get(0);
+        }
+        return null;
     }
 
 

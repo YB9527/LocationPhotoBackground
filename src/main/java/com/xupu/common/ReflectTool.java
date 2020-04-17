@@ -25,7 +25,7 @@ public class ReflectTool {
      */
     public  static  <T> Map<String, T> getIDMap(String methodName,List<T> list) {
         Map<String, T> map = new HashMap<>();
-        if(Tool.IsEmpty(list)){
+        if(Tool.isEmpty(list)){
             return map;
         }
         Class tClass  = list.get(0).getClass() ;

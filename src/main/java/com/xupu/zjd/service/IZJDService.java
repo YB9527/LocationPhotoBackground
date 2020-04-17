@@ -25,4 +25,10 @@ public interface IZJDService {
 
     ZJD findById(Long id);
 
+    /**
+     * 根据宗地编码查找数据
+     * @param zdnum
+     * @return
+     */
+    ZJD findByZDNUM(String zdnum);
 }

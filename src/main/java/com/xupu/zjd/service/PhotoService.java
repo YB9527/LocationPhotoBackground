@@ -32,7 +32,7 @@ public class PhotoService implements IPhotoService {
 
     @Override
     public String getPhotoNativePath(Photo photo, ZJD zjd) {
-        return dkPhotoDir + zjd.getmDKBM() + "/" + photo.getName();
+        return dkPhotoDir + zjd.getZDNUM() + "/" + photo.getName();
     }
 
     @Override
@@ -57,7 +57,7 @@ public class PhotoService implements IPhotoService {
 //前端没有选择文件，srcFile为空
         //选择了文件，开始上传操作
 
-        File upload = new File(dkPhotoDir + zjd.getmDKBM() + "/" + photo.getName());
+        File upload = new File(dkPhotoDir + zjd.getZDNUM() + "/" + photo.getName());
         return savePhotoFile(file, upload);
     }
 
@@ -116,7 +116,7 @@ public class PhotoService implements IPhotoService {
     @Override
     public  List<ZJD> savePhotoFile( Map<String, MultipartFile> map) {
         List<ZJD> zjds = zjdService.findAll();
-        Map<String,ZJD> zjdMap = ReflectTool.getIDMap("getmDKBM",zjds) ;
+        Map<String,ZJD> zjdMap = ReflectTool.getIDMap("getZDNUM",zjds) ;
         for (String androidPath:map.keySet()
              ) {
             MultipartFile file = map.get(androidPath);

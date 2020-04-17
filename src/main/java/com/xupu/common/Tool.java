@@ -16,7 +16,7 @@ public class Tool {
      * @param list
      * @return
      */
-    public static boolean IsEmpty(List list) {
+    public static boolean isEmpty(List list) {
         return list == null || list.isEmpty() ? true : false;
     }
 
@@ -64,4 +64,7 @@ public class Tool {
     }
 
 
+    public static boolean isEmpty(String str) {
+        return str == null ? true:str.isEmpty();
+    }
 }

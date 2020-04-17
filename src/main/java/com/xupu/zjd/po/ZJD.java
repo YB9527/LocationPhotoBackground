@@ -1,11 +1,15 @@
 package com.xupu.zjd.po;
 
 import com.google.gson.annotations.Expose;
+import com.xupu.usermanager.po.User;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 宅基地
+ */
 @Entity
 public class ZJD {
     @Expose
@@ -14,19 +18,22 @@ public class ZJD {
     private Long id;
     @Column(nullable = false)
     @Expose
-    private String mDKBM;
+    private String ZDNUM;
     @Column(nullable = false)
     @Expose
-    private String mDKMC;
+    private String QUANLI;
 
     @OneToMany(mappedBy = "zjd",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
     @Expose
     private List<Photo> photos;
 
     @Expose
-    @OneToMany(mappedBy = "zjdGeometry",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+    @OneToMany(mappedBy = "zjd",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
     private  List<ZJDGeometry> zjdGeometry;//考虑多部件情况
 
+    @ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH},optional=true)
+    @Expose
+    private User user;
 
     public List<ZJDGeometry> getZjdGeometry() {
         return zjdGeometry;
@@ -44,9 +51,18 @@ public class ZJD {
     public void setId(Long id) {
         this.id = id;
     }
-    public ZJD(String mDKBM, String mDKMC) {
-        this.mDKBM = mDKBM;
-        this.mDKMC = mDKMC;
+
+    public ZJD(String ZDNUM, String QUANLI) {
+        this.ZDNUM = ZDNUM;
+        this.QUANLI = QUANLI;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public List<Photo> getPhotos() {
@@ -60,20 +76,20 @@ public class ZJD {
         this.photos = photos;
     }
 
-    public String getmDKBM() {
-        return mDKBM;
+    public String getZDNUM() {
+        return ZDNUM;
     }
 
-    public String getmDKMC() {
-        return mDKMC;
+    public void setZDNUM(String ZDNUM) {
+        this.ZDNUM = ZDNUM;
     }
 
-    public void setmDKBM(String mDKBM) {
-        this.mDKBM = mDKBM;
+    public String getQUANLI() {
+        return QUANLI;
     }
 
-    public void setmDKMC(String mDKMC) {
-        this.mDKMC = mDKMC;
+    public void setQUANLI(String QUANLI) {
+        this.QUANLI = QUANLI;
     }
 
    /* public List<Photo> getPhotos() {
@@ -87,8 +103,8 @@ public class ZJD {
     @Override
     public String toString() {
         return "ZJD{" +
-                "mDKBM='" + mDKBM + '\'' +
-                ", mDKMC='" + mDKMC + '\'' +
+                "ZDNUM='" + ZDNUM + '\'' +
+                ", QUANLI='" + QUANLI + '\'' +
                 ", id=" + id +
                 '}';
     }

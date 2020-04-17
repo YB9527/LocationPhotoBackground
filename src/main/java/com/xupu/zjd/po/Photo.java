@@ -5,6 +5,9 @@ import com.xupu.common.FileTool;
 
 import javax.persistence.*;
 
+/**
+ * 照片
+ */
 @Entity
 public class Photo {
     @Id
@@ -33,6 +36,7 @@ public class Photo {
     public Photo(String androidPath, boolean isUpload) {
         setPath(androidPath);
         setUpload(isUpload);
+
     }
 
     public Boolean getUpload() {

@@ -42,19 +42,29 @@ public class ZJDController {
 
     /**
      * 查询所有地块
-     * @param request
-     * @param response
      * @return
-     * @throws IOException
      */
     @RequestMapping(value = "/findall")
-    public String  findAll(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public String  findAll() {
         List<ZJD> zjds =  zjdService.findAll();
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
                 .create();
         return gson.toJson(zjds);
     }
-
+    /**
+     * 根据 ZDNUM 查询 zjd
+     * @return
+     */
+    @RequestMapping(value = "/findbyzdnum")
+    public String  findAll(String ZDNUM) {
+        if(Tool.isEmpty(ZDNUM)){
+            return  "";
+        }
+        ZJD zjd =  zjdService.findByZDNUM(ZDNUM);
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
+                .create();
+        return gson.toJson(zjd);
+    }
     /**
      * 保存地块
      * @param request
