@@ -1,9 +1,10 @@
-package com.xupu.common;
+package com.xupu.common.tools;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.File;
+import java.lang.reflect.Type;
 import java.util.List;
 
 /**
@@ -17,7 +18,15 @@ public class Tool {
      * @return
      */
     public static boolean isEmpty(List list) {
-        return list == null || list.isEmpty() ? true : false;
+        return list == null ? false: list.isEmpty();
+    }
+    /**
+     *
+     * @param flag null 返回false
+     * @return
+     */
+    public static boolean isEmpty(Boolean flag) {
+        return flag == null ? false:flag;
     }
 
     /**
@@ -66,5 +75,25 @@ public class Tool {
 
     public static boolean isEmpty(String str) {
         return str == null ? true:str.isEmpty();
+    }
+    /** json 转为 对象
+     * @param json
+     * @param type
+     * @return
+     */
+    public static <T> T jsonToObject(String json, Type type) {
+        if(isEmpty(json)){
+            return  null;
+        }
+        T t = getGson().fromJson(json,type);
+        return t;
+    }
+    /**
+     *  对象转换为json
+     * @param obj
+     * @return
+     */
+    public static  String objectToJson(Object obj){
+        return getGson().toJson(obj);
     }
 }

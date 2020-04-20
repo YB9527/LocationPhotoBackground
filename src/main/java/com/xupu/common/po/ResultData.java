@@ -25,6 +25,7 @@ public class ResultData {
      */
     private String json;
 
+
     public Status getStatus() {
         return status;
     }

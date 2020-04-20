@@ -1,6 +1,8 @@
 package com.xupu.zjd.dao;
 
+import com.xupu.xzqy.po.XZDM;
 import com.xupu.zjd.po.ZJD;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -34,4 +36,7 @@ public interface ZJDRepository extends JpaRepository<ZJD,Long> {
     Optional<ZJD> findById(Long aLong);
 
     List<ZJD> findByZDNUM(String ZDNUM);
+
+    List<ZJD> findAll(Specification<ZJD> orderSpecification);
+
 }

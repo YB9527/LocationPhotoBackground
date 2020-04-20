@@ -1,4 +1,4 @@
-package com.xupu.common;
+package com.xupu.common.tools;
 
 import org.springframework.util.ResourceUtils;
 

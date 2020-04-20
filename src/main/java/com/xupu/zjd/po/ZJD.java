@@ -2,6 +2,7 @@ package com.xupu.zjd.po;
 
 import com.google.gson.annotations.Expose;
 import com.xupu.usermanager.po.User;
+import com.xupu.xzqy.po.XZDM;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -22,18 +23,57 @@ public class ZJD {
     @Column(nullable = false)
     @Expose
     private String QUANLI;
+    @Expose
+    private String bz;
+    /**
+     * 地块是否已经上传,服务器里面的都是true,因为已经存在了
+     */
+    @Expose
+    private Boolean isUpload;
 
-    @OneToMany(mappedBy = "zjd",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+
+
+
+
+    @OneToMany(mappedBy = "zjd", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Expose
     private List<Photo> photos;
 
     @Expose
-    @OneToMany(mappedBy = "zjd",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-    private  List<ZJDGeometry> zjdGeometry;//考虑多部件情况
+    @OneToMany(mappedBy = "zjd", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ZJDGeometry> zjdGeometry;//考虑多部件情况
 
-    @ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH},optional=true)
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = true)
     @Expose
     private User user;
+
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = true)
+    @Expose
+    private XZDM xzdm;
+    @Expose
+    private String DJZQDM;
+
+    public String getBz() {
+        return bz;
+    }
+
+    public void setBz(String bz) {
+        this.bz = bz;
+    }
+
+    public String getDJZQDM() {
+        return DJZQDM;
+    }
+    public Boolean getUpload() {
+        return true;
+    }
+
+    public void setUpload(Boolean upload) {
+        isUpload = true;
+    }
+    public void setDJZQDM(String DJZQDM) {
+        this.DJZQDM = DJZQDM;
+    }
 
     public List<ZJDGeometry> getZjdGeometry() {
         return zjdGeometry;
@@ -42,8 +82,11 @@ public class ZJD {
     public void setZjdGeometry(List<ZJDGeometry> zjdGeometry) {
         this.zjdGeometry = zjdGeometry;
     }
-   public ZJD() {
-   }
+
+    public ZJD() {
+        this.isUpload = true;
+    }
+
     public Long getId() {
         return id;
     }
@@ -57,6 +100,14 @@ public class ZJD {
         this.QUANLI = QUANLI;
     }
 
+    public XZDM getXzdm() {
+        return xzdm;
+    }
+
+    public void setXzdm(XZDM xzdm) {
+        this.xzdm = xzdm;
+    }
+
     public User getUser() {
         return user;
     }
@@ -66,7 +117,7 @@ public class ZJD {
     }
 
     public List<Photo> getPhotos() {
-        if(photos == null){
+        if (photos == null) {
             photos = new ArrayList<>();
         }
         return photos;

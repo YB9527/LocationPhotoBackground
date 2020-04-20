@@ -1,14 +1,15 @@
 package com.xupu.common.controller;
 
-import com.xupu.common.Tool;
+import com.xupu.common.tools.HttpUtils;
+import com.xupu.common.tools.Tool;
 
 import com.xupu.common.po.ResultData;
 import com.xupu.common.po.Status;
 import com.xupu.common.service.IRedisService;
-import com.xupu.xzqy.po.XZDM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -29,8 +30,8 @@ public class RedisController {
      * @return
      */
     @GetMapping("/findredis")
-    public ResultData findRedis(String userid,String mark) {
-
+    public ResultData findRedis(String userid, String mark, HttpServletRequest request) {
+        String ip = HttpUtils.getIpAddr(request);
         ResultData reultData =  checkUserIdAndMark(userid,mark);
         if(reultData != null){
            return  reultData;
@@ -81,19 +82,19 @@ public class RedisController {
     }
 
     /**
-     * 得到选中的行政代码
+     * 得到选中 的行政代码
      * @param userid
      * @param mark
      * @return
      */
-    @RequestMapping(value = "/findselectxzdm")
+    @RequestMapping(value = "/findselectdjzqdms")
     public ResultData  findSelectXZDM(String userid, String mark) {
         ResultData reultData =  checkUserIdAndMark(userid,mark);
         if(reultData != null){
             return  reultData;
         }
-        List<XZDM> xzdms = redisService.findSelectXZDM(Long.parseLong(userid),mark);
-        return  new ResultData(Status.Success,"成功",Tool.getGson().toJson(xzdms));
+        List<String> djzqdms = redisService.findSelectXZDM(Long.parseLong(userid),mark);
+        return  new ResultData(Status.Success,"成功",Tool.getGson().toJson(djzqdms));
     }
 
 }

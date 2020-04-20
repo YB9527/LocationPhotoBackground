@@ -1,6 +1,8 @@
 package com.xupu.usermanager.controller;
 
-import com.xupu.common.Tool;
+import com.xupu.common.tools.Tool;
+import com.xupu.common.po.ResultData;
+import com.xupu.common.service.ResultDataService;
 import com.xupu.usermanager.po.User;
 import com.xupu.usermanager.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,13 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 @RequestMapping(value = "/user")
 public class UserController {
     @Autowired
     private IUserService userService;
+
+    private static ResultDataService resultDataService= ResultDataService.getResultDataService();
 
     /**
      * 登录用户
@@ -23,13 +25,15 @@ public class UserController {
      */
     @PostMapping("/login")
     @ResponseBody
-    public User login(String user) {
+    public ResultData login(String user) {
         User userPo = Tool.getGson().fromJson(user,User.class);
         if(user == null || Tool.isEmpty(userPo.getAccount()) || Tool.isEmpty(userPo.getPassword())){
-            return null;
+            return resultDataService.getErrorResultData();
         }
-        return userService.login(userPo);
+        userPo =  userService.login(userPo);
+        return  resultDataService.getSuccessResultData(userPo);
     }
+
 
 
 }

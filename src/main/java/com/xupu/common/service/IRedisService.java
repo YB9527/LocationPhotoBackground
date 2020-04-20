@@ -22,5 +22,5 @@ public interface IRedisService {
      */
     void saveOrUpdate(long userid, String mark, String data);
 
-    List<XZDM> findSelectXZDM(Long userid, String mark);
+    List<String> findSelectXZDM(Long userid, String mark);
 }

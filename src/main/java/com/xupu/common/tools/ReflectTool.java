@@ -1,4 +1,4 @@
-package com.xupu.common;
+package com.xupu.common.tools;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;

@@ -1,4 +1,4 @@
-package com.xupu.common;
+package com.xupu.common.po;
 
 import org.springframework.web.multipart.MultipartFile;
 

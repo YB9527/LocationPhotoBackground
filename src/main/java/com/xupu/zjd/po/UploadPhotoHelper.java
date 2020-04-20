@@ -1,6 +1,6 @@
 package com.xupu.zjd.po;
 
-import com.xupu.common.UploadFileHelper;
+import com.xupu.common.po.UploadFileHelper;
 
 public class  UploadPhotoHelper extends UploadFileHelper {
     private String photo;

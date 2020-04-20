@@ -2,18 +2,10 @@ package com.xupu.zjd.controller;
 
 
 import com.google.gson.Gson;
-import com.xupu.common.FileTool;
-import com.xupu.common.SpringBootTool;
-import com.xupu.common.Tool;
-import com.xupu.common.UploadFileHelper;
+import com.xupu.common.tools.Tool;
 import com.xupu.zjd.po.*;
 import com.xupu.zjd.service.IPhotoService;
 import com.xupu.zjd.service.IZJDService;
-import com.xupu.zjd.service.PhotoService;
-import com.xupu.zjd.service.ZJDService;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,12 +16,8 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * Created by jack on 2017/10/30.

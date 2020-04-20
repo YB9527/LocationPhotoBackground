@@ -1,6 +1,6 @@
 package com.xupu.zjd.service;
 
-import com.xupu.common.SpringBootTool;
+import com.xupu.common.tools.SpringBootTool;
 import com.xupu.zjd.po.Photo;
 import com.xupu.zjd.po.ZJD;
 import org.springframework.web.multipart.MultipartFile;

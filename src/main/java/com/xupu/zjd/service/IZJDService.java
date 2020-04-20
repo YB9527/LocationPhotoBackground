@@ -1,10 +1,9 @@
 package com.xupu.zjd.service;
 
-import com.xupu.common.SpringBootTool;
+import com.xupu.common.tools.SpringBootTool;
 import com.xupu.zjd.po.ZJD;
 
 import java.util.List;
-import java.util.Map;
 
 public interface IZJDService {
 
@@ -31,4 +30,17 @@ public interface IZJDService {
      * @return
      */
     ZJD findByZDNUM(String zdnum);
+
+    /**
+     * 根据行政代码 查找 符合的宅基地
+     * @param djzqdms
+     * @return
+     */
+    List<ZJD> findByDJZQDM(List<String> djzqdms);
+
+    /**
+     * 修改在基地
+     * @param zjdPo
+     */
+    void update(ZJD zjdPo);
 }

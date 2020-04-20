@@ -1,7 +1,7 @@
 package com.xupu.zjd.po;
 
 import com.google.gson.annotations.Expose;
-import com.xupu.common.FileTool;
+import com.xupu.common.tools.FileTool;
 
 import javax.persistence.*;
 
