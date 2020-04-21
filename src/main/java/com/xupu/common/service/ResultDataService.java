@@ -13,12 +13,15 @@ public class ResultDataService {
     private ResultData errorResultData;
     private static ResultData successResultData;
     private ResultData otherResultData;
+    private ResultData errMessageResultData;
 
     private ResultDataService() {
         errorResultData = new ResultData(Status.Error, "失败", null);
         successResultData = new ResultData(Status.Success, "成功", null);
         otherResultData = new ResultData(Status.Other, null, null);
+        errMessageResultData = new ResultData(Status.Error,null,null);
     }
+
 
     /**
      * 单例模式 得到本对象
@@ -69,5 +72,15 @@ public class ResultDataService {
      */
     public ResultData getSuccessResultData(Object obj) {
        return getSuccessResultData(Tool.getGson().toJson(obj));
+    }
+
+    /**
+     * 得到 自定义 的错误提示信息
+     * @param tip
+     * @return
+     */
+    public ResultData getErrorResultData(String tip) {
+        errMessageResultData.setMessage(tip);
+        return  errMessageResultData;
     }
 }

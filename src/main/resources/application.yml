@@ -2,7 +2,7 @@ server:
   max-http-header-size: 4048576
   tomcat:
     max-http-post-size: 1000MB  #请求参数长度
-  port: 8080
+  port: 3334
   servlet:
     context-path: /
 spring:

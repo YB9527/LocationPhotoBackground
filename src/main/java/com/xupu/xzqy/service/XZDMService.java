@@ -33,7 +33,7 @@ public class XZDMService implements IXZDMService {
      */
     public void flushXzdms() {
         xzdms = findAll();
-        djzqdmMap = ReflectTool.getIDMap("getDJZQDM", xzdms);
+        djzqdmMap = ReflectTool.getIDMap("getDJZQDM", getXzdms());
     }
 
     private static Map<String, XZDM> djzqdmMap;
@@ -45,7 +45,7 @@ public class XZDMService implements IXZDMService {
      */
     public Map<String, XZDM> getDJZQDMMap() {
         if (djzqdmMap == null) {
-            djzqdmMap = ReflectTool.getIDMap("getDJZQDM", xzdms);
+            djzqdmMap = ReflectTool.getIDMap("getDJZQDM", getXzdms());
         }
         return djzqdmMap;
     }

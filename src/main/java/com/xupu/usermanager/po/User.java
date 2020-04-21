@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.xupu.zjd.po.ZJD;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -31,7 +32,7 @@ public class User {
      * 注册日期
      */
     @Expose
-    private String registDate;
+    private Date registDate;
     /**
      * 角色级别
      */
@@ -72,11 +73,11 @@ public class User {
         this.password = password;
     }
 
-    public String getRegistDate() {
+    public Date getRegistDate() {
         return registDate;
     }
 
-    public void setRegistDate(String registDate) {
+    public void setRegistDate(Date registDate) {
         this.registDate = registDate;
     }
 

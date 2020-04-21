@@ -7,6 +7,7 @@ import com.xupu.common.po.ResultData;
 import com.xupu.common.service.ResultDataService;
 import com.xupu.common.tools.FileTool;
 import com.xupu.common.tools.Tool;
+import com.xupu.xzqy.po.XZDM;
 import com.xupu.zjd.po.ZJD;
 import com.xupu.zjd.po.Photo;
 import com.xupu.zjd.service.IZJDService;
@@ -110,5 +111,18 @@ public class ZJDController {
         photo.setPath("d:/99988877.jpg");
         //photoService.deletePhoto(photo);
         zjdService.delete(ZJDS);
+    }
+
+    @PostMapping("/findzjdsbyxzdmanduser")
+    @ResponseBody
+    public ResultData findzjdsbyxzdm_user(String userid,String djzqdms) {
+        Long id =null ;
+        if(!Tool.isEmpty(userid)){
+            id = Long.parseLong(userid);
+        }
+        List<String> djzqdmsList = Tool.jsonToObject(djzqdms,new TypeToken<List<String>>(){}.getType());
+        List<ZJD> zjds =  zjdService.findByDJZQDM(id,djzqdmsList);
+
+        return  resultDataService.getSuccessResultData(zjds);
     }
 }

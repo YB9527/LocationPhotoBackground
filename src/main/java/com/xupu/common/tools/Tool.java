@@ -18,7 +18,7 @@ public class Tool {
      * @return
      */
     public static boolean isEmpty(List list) {
-        return list == null ? false: list.isEmpty();
+        return list == null ? true: list.isEmpty();
     }
     /**
      *
@@ -74,7 +74,7 @@ public class Tool {
 
 
     public static boolean isEmpty(String str) {
-        return str == null ? true:str.isEmpty();
+        return str == null ? true : str.trim().isEmpty();
     }
     /** json 转为 对象
      * @param json

@@ -1,6 +1,7 @@
 package com.xupu.zjd.service;
 
 import com.xupu.common.tools.SpringBootTool;
+import com.xupu.xzqy.po.XZDM;
 import com.xupu.zjd.po.ZJD;
 
 import java.util.List;
@@ -43,4 +44,12 @@ public interface IZJDService {
      * @param zjdPo
      */
     void update(ZJD zjdPo);
+
+    /**
+     * 根据 id 和 djzqdm 查找种地， 如果id == null 返回所有符合 djzqdms 的宗地
+     * @param id
+     * @param djzqdms
+     * @return
+     */
+    List<ZJD> findByDJZQDM(Long id,  List<String> djzqdms);
 }

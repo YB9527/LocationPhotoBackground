@@ -1,6 +1,7 @@
 package com.xupu.zjd.service;
 
 import com.xupu.common.tools.RepositoryTool;
+import com.xupu.usermanager.po.User;
 import com.xupu.xzqy.po.XZDM;
 import com.xupu.xzqy.service.IXZDMService;
 import com.xupu.xzqy.service.XZDMService;
@@ -100,5 +101,24 @@ public class ZJDService implements IZJDService {
 
     }
 
+    @Override
+    public List<ZJD> findByDJZQDM(Long id, List<String> djzqdms) {
+        List<ZJD> zjds = findByDJZQDM(djzqdms);
+        if (id == null) {
+            return zjds;
+        }
+        long idValue = id.longValue();
+        List<ZJD> results = new ArrayList<>();
+        if (zjds != null) {
+            for (ZJD zjd : zjds
+            ) {
+                User user = zjd.getUser();
+                if (user == null || idValue == user.getId().longValue()) {
+                    results.add(zjd);
+                }
+            }
+        }
+        return results;
+    }
 
 }
