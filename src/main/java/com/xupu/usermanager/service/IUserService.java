@@ -1,7 +1,12 @@
 package com.xupu.usermanager.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.xupu.common.po.ResultData;
+import com.xupu.usermanager.po.Level;
 import com.xupu.usermanager.po.User;
+
+import java.util.List;
+import java.util.Map;
 
 public interface IUserService {
     /**
@@ -19,4 +24,21 @@ public interface IUserService {
      * @return
      */
     ResultData registUser(User userPo);
+
+    /**
+     * 查找所有的用户
+     * @return
+     */
+    List<User> findAll();
+
+    /**
+     * 编辑用户
+     * @param userPo
+     * @return
+     */
+    ResultData editUser(User userPo);
+
+    User findById(Long id);
+
+    List<JSONObject> findLevels();
 }

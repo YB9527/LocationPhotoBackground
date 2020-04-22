@@ -64,6 +64,9 @@ public class ResultDataService {
         successResultData.setJson(json);
         return successResultData;
     }
+
+
+
     /**
      * 得到正确的 http 返回信息
      *
@@ -71,7 +74,8 @@ public class ResultDataService {
      * @return
      */
     public ResultData getSuccessResultData(Object obj) {
-       return getSuccessResultData(Tool.getGson().toJson(obj));
+
+        return getSuccessResultData(Tool.getGson().toJson(obj));
     }
 
     /**

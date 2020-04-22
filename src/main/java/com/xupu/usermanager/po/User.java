@@ -37,14 +37,14 @@ public class User {
      * 角色级别
      */
     @Expose
-    @Enumerated(EnumType.ORDINAL)
-    private Level level;
-
+    @ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH},optional=true)//可选属性optional=false,表示author不能为空。删除文章，不影响用户
+    private UserLevel userLevel;
     /**
      * 用户邮箱，用于找回密码
      */
     @Expose
     private String email;
+
 
     @OneToMany(mappedBy = "user",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
     private List<ZJD> zjds;
@@ -81,12 +81,20 @@ public class User {
         this.registDate = registDate;
     }
 
-    public Level getLevel() {
-        return level;
+    public List<ZJD> getZjds() {
+        return zjds;
     }
 
-    public void setLevel(Level level) {
-        this.level = level;
+    public void setZjds(List<ZJD> zjds) {
+        this.zjds = zjds;
+    }
+
+    public UserLevel getUserLevel() {
+        return userLevel;
+    }
+
+    public void setUserLevel(UserLevel userLevel) {
+        this.userLevel = userLevel;
     }
 
     public String getEmail() {
@@ -108,12 +116,14 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "account='" + account + '\'' +
+                "id=" + id +
+                ", account='" + account + '\'' +
                 ", nickName='" + nickName + '\'' +
                 ", password='" + password + '\'' +
-                ", registDate='" + registDate + '\'' +
-                ", level=" + level +
+                ", registDate=" + registDate +
+                ", userLevel=" + userLevel +
                 ", email='" + email + '\'' +
+                ", zjds=" + zjds +
                 '}';
     }
 }

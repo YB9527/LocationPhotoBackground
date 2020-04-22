@@ -34,7 +34,7 @@ public class RedisService implements IRedisService {
     }
 
     @Override
-    public void saveOrUpdate(long userid, String mark, String data) {
+    public void saveOrUpdate(Long userid, String mark, String data) {
         Redis redis = redisRepository.findByUserIdAndMark(userid, mark);
         if (redis == null) {
             //如果没有是保存到数据库
@@ -94,5 +94,10 @@ public class RedisService implements IRedisService {
             }
         }
         return reults;
+    }
+
+    @Override
+    public Redis findByMark(String mark) {
+        return redisRepository.findByMark(mark);
     }
 }

@@ -1,5 +1,6 @@
 package com.xupu.common.service;
 
+import com.xupu.common.po.Redis;
 import com.xupu.xzqy.po.XZDM;
 
 import javax.persistence.Cache;
@@ -20,7 +21,9 @@ public interface IRedisService {
      * @param mark
      * @param data
      */
-    void saveOrUpdate(long userid, String mark, String data);
+    void saveOrUpdate(Long userid, String mark, String data);
 
     List<String> findSelectXZDM(Long userid, String mark);
+
+    Redis findByMark(String mark);
 }

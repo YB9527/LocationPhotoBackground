@@ -11,4 +11,6 @@ import javax.persistence.Entity;
 public interface RedisRepository extends JpaRepository<Redis,Long> {
 
     Redis findByUserIdAndMark(Long  userId, String mark);
+
+    Redis findByMark(String mark);
 }
