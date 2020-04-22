@@ -1,5 +1,6 @@
 package com.xupu.common.controller;
 
+import com.xupu.common.service.ResultDataService;
 import com.xupu.common.tools.HttpUtils;
 import com.xupu.common.tools.Tool;
 
@@ -22,7 +23,7 @@ public class RedisController {
 
     @Autowired
     private IRedisService redisService;
-
+    private static ResultDataService resultDataService= ResultDataService.getResultDataService();
     /**
      * 查找缓存的数据
      * @param userid 用户id
@@ -94,6 +95,9 @@ public class RedisController {
             return  reultData;
         }
         List<String> djzqdms = redisService.findSelectXZDM(Long.parseLong(userid),mark);
+        /*if(djzqdms == null){
+            new ResultData(Status.Success,"成功",Tool.getGson().toJson(djzqdms));
+        }*/
         return  new ResultData(Status.Success,"成功",Tool.getGson().toJson(djzqdms));
     }
 

@@ -36,7 +36,10 @@ public class UserController {
             return resultDataService.getErrorResultData();
         }
         userPo = userService.login(userPo);
-        if (userPo.getUserLevel() == null) {
+        if(userPo == null){
+            return resultDataService.getErrorResultData("登录失败！！！");
+        }
+        if (userPo.getLevel() == null) {
             return resultDataService.getErrorResultData(userPo.getNickName() + "，你好，管理员，还没有同意注册，请稍等!!!");
         }
         return resultDataService.getSuccessResultData(userPo);

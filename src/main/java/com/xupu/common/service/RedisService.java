@@ -55,7 +55,9 @@ public class RedisService implements IRedisService {
         }
         List<String> djzqdms = Tool.getGson().fromJson(json, new TypeToken<List<String>>() {
         }.getType());
-
+        if(djzqdms == null){
+            return null;
+        }
         List<XZDM> list = xzdmRepository.findAll(new Specification<XZDM>() {
             @Override
             public Predicate toPredicate(Root<XZDM> root, CriteriaQuery<?> query, CriteriaBuilder cb) {

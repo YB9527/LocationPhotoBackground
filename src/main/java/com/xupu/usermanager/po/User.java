@@ -34,11 +34,17 @@ public class User {
     @Expose
     private Date registDate;
     /**
-     * 角色级别
+     * 用户级别
      */
     @Expose
-    @ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH},optional=true)//可选属性optional=false,表示author不能为空。删除文章，不影响用户
-    private UserLevel userLevel;
+    @Enumerated(EnumType.ORDINAL)
+    private Level level;
+    /**
+     * 管理的行政区域
+     */
+    @Expose
+    @ElementCollection
+    private List<String> djzqdms;
     /**
      * 用户邮箱，用于找回密码
      */
@@ -89,13 +95,7 @@ public class User {
         this.zjds = zjds;
     }
 
-    public UserLevel getUserLevel() {
-        return userLevel;
-    }
 
-    public void setUserLevel(UserLevel userLevel) {
-        this.userLevel = userLevel;
-    }
 
     public String getEmail() {
         return email;
@@ -113,6 +113,22 @@ public class User {
         this.id = id;
     }
 
+    public Level getLevel() {
+        return level;
+    }
+
+    public void setLevel(Level level) {
+        this.level = level;
+    }
+
+    public List<String> getDjzqdms() {
+        return djzqdms;
+    }
+
+    public void setDjzqdms(List<String> djzqdms) {
+        this.djzqdms = djzqdms;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -121,7 +137,7 @@ public class User {
                 ", nickName='" + nickName + '\'' +
                 ", password='" + password + '\'' +
                 ", registDate=" + registDate +
-                ", userLevel=" + userLevel +
+                ", level=" + level +
                 ", email='" + email + '\'' +
                 ", zjds=" + zjds +
                 '}';
