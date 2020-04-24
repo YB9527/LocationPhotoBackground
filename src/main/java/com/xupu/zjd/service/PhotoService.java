@@ -28,11 +28,13 @@ public class PhotoService implements IPhotoService {
 
     @Override
     public String getPhotoNativePath(Photo photo, ZJD zjd) {
+
         return dkPhotoDir + zjd.getZDNUM() + "/" + photo.getName();
     }
 
     @Override
     public void deletePhoto(ZJD zjd, Photo photo) {
+
         photoRepository.delete(photo);
         //删除本地文件
         String nativePath = getPhotoNativePath(photo, zjd);

@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.xupu.common.tools.FileTool;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * 照片
@@ -22,7 +23,21 @@ public class Photo {
     private String name;
     @Expose
     private String bz;
-
+    /**
+     * 照片纬度
+     */
+    @Expose
+    private Double latitude;
+    /**
+     * 照片经度
+     */
+    @Expose
+    private Double longitude;
+    /**
+     * 拍照时间
+     */
+    @Expose
+    private Date createDate;
     /**
      * 是否已经上传文件
      */
@@ -37,6 +52,30 @@ public class Photo {
         setPath(androidPath);
         setUpload(isUpload);
 
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 
     public Boolean getUpload() {

@@ -43,6 +43,9 @@ public class PhotoController {
 
         Photo photoPo = Tool.getGson().fromJson(photo, Photo.class);
         ZJD zjdPo = zjdService.findById(Tool.getGson().fromJson(zjd, ZJD.class).getId());
+        if(photoPo == null || zjdPo == null){
+            return true;
+        }
         photoService.deletePhoto(zjdPo, photoPo);
         return true;
     }
@@ -82,15 +85,15 @@ public class PhotoController {
 
     @RequestMapping(value = "/zjdphotodowload")
     public void downloadFile(@RequestParam(name = "ZDNUM") String ZDNUM, @RequestParam(name = "photoname") String photoname, HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-
-        InputStream f = new FileInputStream(photoService.dkPhotoDir + ZDNUM + "/" + photoname);
-
-
+        String path = photoService.dkPhotoDir + ZDNUM + "/" + photoname;
+        File file = new File(path);
+        if(!file.exists()){
+            return;
+        }
+        InputStream f = new FileInputStream(path);
         response.reset();
         //response.setContentType("application/x-msdownload;charset=utf-8");
         response.setContentType("image/png");
-
         try {
             response.setHeader("Content-Disposition", "attachment;filename=" + new String(("timg" + ".png").getBytes("gbk"), "iso-8859-1"));//下载文件的名称
         } catch (UnsupportedEncodingException e) {

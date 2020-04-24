@@ -161,6 +161,10 @@ public class FileTool {
         //response.setContentType("application/x-msdownload;charset=utf-8");
         //response.setContentType("image/png");
         try {
+            File file = new File(filePath);
+            if(!file.exists()){
+                return;
+            }
             InputStream f = new FileInputStream(filePath);
             response.setHeader("Content-Disposition", "attachment;filename=" + new String((FileTool.getFileName(filePath)).getBytes("gbk"), "iso-8859-1"));//下载文件的名称
             ServletOutputStream sout = response.getOutputStream();

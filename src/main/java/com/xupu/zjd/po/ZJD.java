@@ -84,7 +84,7 @@ public class ZJD {
     }
 
     public ZJD() {
-        this.isUpload = true;
+
     }
 
     public Long getId() {
