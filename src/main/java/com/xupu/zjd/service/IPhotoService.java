@@ -37,4 +37,17 @@ public interface IPhotoService {
      * @param map
      */
     List<ZJD>  savePhotoFile(Map<String, MultipartFile> map);
+
+    /**
+     * 删除 宅基地照片
+     * @param zjdPo
+     */
+    void deleteAllPhotoByZJD(ZJD zjdPo);
+
+    /**
+     * 修改 宅基地照片路径
+     * @param oldZJD
+     * @param newZJD
+     */
+    void updatePhotoPath(ZJD oldZJD, ZJD newZJD);
 }

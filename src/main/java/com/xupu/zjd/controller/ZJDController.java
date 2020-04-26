@@ -100,7 +100,26 @@ public class ZJDController {
             return  resultDataService.getOtherResultData("没有需要保存的地块");
         }
         ZJD zjdPo = Tool.jsonToObject(zjd,ZJD.class);
+
+        //修改照片路径
+        ZJD oldZJD = zjdService.findById(zjdPo.getId());
+        photoService.updatePhotoPath(oldZJD,zjdPo);
         zjdService.save(zjdPo);
+        return  resultDataService.getSuccessResultData("");
+    }
+    /**
+    * 删除宅基地， 和 所属的宅基地
+     * @param po
+     */
+    @PostMapping("/deletezjd")
+    @ResponseBody
+    public ResultData deleteZJD(String po) {
+        if(Tool.isEmpty(po)){
+            return  resultDataService.getErrorResultData("没有需要删除地块");
+        }
+        ZJD zjdPo = Tool.jsonToObject(po,ZJD.class);
+        zjdService.deleteZJD(zjdPo);
+        photoService.deleteAllPhotoByZJD(zjdPo);
         return  resultDataService.getSuccessResultData("");
     }
 

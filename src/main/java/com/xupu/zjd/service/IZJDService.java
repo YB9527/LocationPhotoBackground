@@ -52,4 +52,12 @@ public interface IZJDService {
      * @return
      */
     List<ZJD> findByDJZQDM(Long id,  List<String> djzqdms);
+
+    /**
+     * 删除宅基地
+     * @param zjdPo
+     */
+    void deleteZJD(ZJD zjdPo);
+
+
 }

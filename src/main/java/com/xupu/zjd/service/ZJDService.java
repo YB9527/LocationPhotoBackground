@@ -121,4 +121,15 @@ public class ZJDService implements IZJDService {
         return results;
     }
 
+    /**
+     *     // 删除 宅基地
+     * @param zjdPo
+     */
+    @Override
+    public void deleteZJD(ZJD zjdPo) {
+        zjdRepository.delete(zjdPo);
+    }
+
+
+
 }

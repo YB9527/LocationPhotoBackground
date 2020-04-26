@@ -60,8 +60,7 @@ public class PhotoService implements IPhotoService {
     }
 
     /**
-     *
-     * @param file 数据源
+     * @param file   数据源
      * @param upload 新建空数据库
      * @return
      */
@@ -112,44 +111,77 @@ public class PhotoService implements IPhotoService {
 
 
     @Override
-    public  List<ZJD> savePhotoFile( Map<String, MultipartFile> map) {
+    public List<ZJD> savePhotoFile(Map<String, MultipartFile> map) {
         List<ZJD> zjds = zjdService.findAll();
-        Map<String,ZJD> zjdMap = ReflectTool.getIDMap("getZDNUM",zjds) ;
-        for (String androidPath:map.keySet()
-             ) {
+        Map<String, ZJD> zjdMap = ReflectTool.getIDMap("getZDNUM", zjds);
+        for (String androidPath : map.keySet()
+        ) {
             MultipartFile file = map.get(androidPath);
-            Photo photo = new Photo(androidPath,true);
-            String dkbm =getDKBMByAndroidPath(androidPath);
+            Photo photo = new Photo(androidPath, true);
+            String dkbm = getDKBMByAndroidPath(androidPath);
             String fileName = getFileNameyAndroidPath(androidPath);
             String path = dkPhotoDir + dkbm + "/" + fileName;
             File upload = new File(path);
             ZJD zjd = zjdMap.get(dkbm);
             zjd.getPhotos().add(photo);
             photo.setZjd(zjd);
-            savePhotoFile(file,upload);
+            savePhotoFile(file, upload);
         }
         zjdService.saveAll(zjds);
         return zjds;
     }
 
+
     /**
      * 通过安卓保存的路径 得到 文件名字
+     *
      * @param androidPath
      * @return
      */
     private String getFileNameyAndroidPath(String androidPath) {
         String flag = "com.xp/files";
-        String name = androidPath.substring(androidPath.lastIndexOf("/")+1);
-        return  name;
+        String name = androidPath.substring(androidPath.lastIndexOf("/") + 1);
+        return name;
     }
+
     //通过安卓保存的路径 得到 宅基地编码  /storage/emulated/0/Android/data/com.xp/cache/zjd/zjdphoto/2/临时照片3333.jpg
     private String getDKBMByAndroidPath(String androidPath) {
         String flag = "zjd/zjdphoto/";
-        int start = androidPath.indexOf(flag)+flag.length();
-        int end = androidPath.indexOf("/",start);
-        String dkbm = androidPath.substring(start,end);
+        int start = androidPath.indexOf(flag) + flag.length();
+        int end = androidPath.indexOf("/", start);
+        String dkbm = androidPath.substring(start, end);
         return dkbm;
     }
 
+    /**
+     * 删除 照片
+     *
+     * @param zjdPo
+     */
+    @Override
+    public void deleteAllPhotoByZJD(ZJD zjdPo) {
+        if (zjdPo != null) {
+            for (Photo photo : zjdPo.getPhotos()) {
+                deletePhoto(zjdPo, photo);
+            }
+        }
+    }
+
+    @Override
+    public void updatePhotoPath(ZJD oldZJD, ZJD newZJD) {
+        if(oldZJD == null || newZJD == null){
+            return;
+        }
+        File file1 = new File( dkPhotoDir + oldZJD.getZDNUM());
+        //将原文件夹更改为A，其中路径是必要的。注意
+        file1.renameTo(new File(dkPhotoDir + newZJD.getZDNUM()));
+
+        //修改照片路径
+        for (Photo photo :newZJD.getPhotos()){
+            photo.setPath(photo.getPath().replace(dkPhotoDir + oldZJD.getZDNUM(),dkPhotoDir + newZJD.getZDNUM()));
+        }
+
+
+    }
 
 }
