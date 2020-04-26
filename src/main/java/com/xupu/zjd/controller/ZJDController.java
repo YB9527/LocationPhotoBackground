@@ -75,6 +75,22 @@ public class ZJDController {
                 .create();
         return gson.toJson(zjd);
     }
+
+    /**
+     * 根据 ZDNUM 查询 zjd
+     * @return
+     */
+    @RequestMapping(value = "/findbyzdnumresultdata")
+    public ResultData  findbyzdnum(String ZDNUM) {
+        if(Tool.isEmpty(ZDNUM)){
+            return  resultDataService.getErrorResultData("没有传输编码过来");
+        }
+        ZJD zjd =  zjdService.findByZDNUM(ZDNUM);
+
+        return  resultDataService.getSuccessResultData(zjd);
+    }
+
+
     /**
      * 保存宅基地
      * @param zjds
