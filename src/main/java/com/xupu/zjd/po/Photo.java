@@ -37,7 +37,7 @@ public class Photo {
      * 拍照时间
      */
     @Expose
-    private Date createDate;
+    private String createDate;
     /**
      * 是否已经上传文件
      */
@@ -70,11 +70,11 @@ public class Photo {
         this.longitude = longitude;
     }
 
-    public Date getCreateDate() {
+    public String getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreateDate(String createDate) {
         this.createDate = createDate;
     }
 

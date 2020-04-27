@@ -35,12 +35,13 @@ public class UserService implements IUserService {
      */
     public UserService() {
         levels = new ArrayList<>();
-       // String str = Level.manager.toString();
+        // String str = Level.manager.toString();
         levels.add(JSONObject.parseObject(Level.manager.toString()));
         levels.add(JSONObject.parseObject(Level.employee.toString()));
         levels.add(JSONObject.parseObject(Level.government.toString()));
         levels.add(JSONObject.parseObject(Level.peasant.toString()));
     }
+
     @Override
     public User login(User user) {
         User repositoryUser = userRepository.findByAccount(user.getAccount());
@@ -92,7 +93,7 @@ public class UserService implements IUserService {
             }
 
         } else {
-            user.setRegistDate(new Date());
+            user.setRegistDate(DateTool.dataFormat(new Date()));
             userRepository.save(user);
             return resultDataService.getSuccessResultData(user);
         }

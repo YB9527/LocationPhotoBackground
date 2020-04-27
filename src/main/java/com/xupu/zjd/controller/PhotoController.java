@@ -136,8 +136,9 @@ public class PhotoController {
     @ResponseBody
     public String handleFileUpload(UploadPhotoHelper uploadHelper) {
 // 文件和参数 都在实体中了
-        Photo photo = new Gson().fromJson(uploadHelper.getPhoto(), Photo.class);
-        ZJD zjd = new Gson().fromJson(uploadHelper.getZjd(), ZJD.class);
+        Photo photo = Tool.jsonToObject(uploadHelper.getPhoto(), Photo.class);
+
+        ZJD zjd =  Tool.jsonToObject(uploadHelper.getZjd(), ZJD.class);
         boolean isSuccess = photoService.savePhotoFile(uploadHelper.getFile(), photo, zjd);
         if (isSuccess) {
             zjd = zjdService.findById(zjd.getId());
