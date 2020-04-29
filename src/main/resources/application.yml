@@ -13,7 +13,7 @@ spring:
       max-request-size: 1000MB #单个请求的文件总大小上限
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/smile_boot?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    url: jdbc:mysql://127.0.0.1:3306/locationphoto?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
     username: root
     password: 1234
 
@@ -24,4 +24,4 @@ spring:
           auto: update
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
         format_sql: true
-    show-sql: true
+    show-sql: false

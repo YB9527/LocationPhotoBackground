@@ -1,7 +1,6 @@
 package com.xupu.zjd.service;
 
 import com.xupu.common.tools.SpringBootTool;
-import com.xupu.xzqy.po.XZDM;
 import com.xupu.zjd.po.ZJD;
 
 import java.util.List;
@@ -17,7 +16,7 @@ public interface IZJDService {
      */
     List<ZJD> findAll();
 
-    void saveAll(List<ZJD> ZJDS);
+    void saveOrUpdateAll(List<ZJD> ZJDS);
 
     void save(ZJD ZJD);
 
@@ -59,5 +58,19 @@ public interface IZJDService {
      */
     void deleteZJD(ZJD zjdPo);
 
+    /**
+     * festure 的json 数据 转换为宅基地
+     * @param featureJsons
+     * @return
+     */
+    List<ZJD> jsonToZJD(List<String> featureJsons);
 
+    /**
+     * 检查在基地的问题
+     * @param zjds
+     * @return 错误的问题
+     */
+    List<String> checkZJDs(List<ZJD> zjds);
+
+    void deleteZJDByID(Long id);
 }

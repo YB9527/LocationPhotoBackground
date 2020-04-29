@@ -1,9 +1,8 @@
 package com.xupu.usermanager.controller;
 
-import com.xupu.common.tools.Tool;
 import com.xupu.common.po.ResultData;
 import com.xupu.common.service.ResultDataService;
-import com.xupu.usermanager.po.Level;
+import com.xupu.common.tools.Tool;
 import com.xupu.usermanager.po.User;
 import com.xupu.usermanager.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/user")
@@ -43,6 +41,7 @@ public class UserController {
             return resultDataService.getErrorResultData(userPo.getNickName() + "，你好，管理员，还没有同意注册，请稍等!!!");
         }
         return resultDataService.getSuccessResultData(userPo);
+
     }
 
     /**

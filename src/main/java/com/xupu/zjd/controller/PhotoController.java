@@ -1,9 +1,13 @@
 package com.xupu.zjd.controller;
 
 
-import com.google.gson.Gson;
+import com.xupu.common.po.ResultData;
+import com.xupu.common.po.Status;
+import com.xupu.common.service.ResultDataService;
 import com.xupu.common.tools.Tool;
-import com.xupu.zjd.po.*;
+import com.xupu.zjd.po.Photo;
+import com.xupu.zjd.po.UploadPhotoHelper;
+import com.xupu.zjd.po.ZJD;
 import com.xupu.zjd.service.IPhotoService;
 import com.xupu.zjd.service.IZJDService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +30,8 @@ import java.util.Map;
 @RequestMapping(value = "/zjdphoto")
 public class PhotoController {
 
+    //private static CommonMethod cm = new CommonMethod();
+    private static ResultDataService resultDataService = ResultDataService.getResultDataService();
     @Autowired
     private IPhotoService photoService;
     @Autowired
@@ -33,8 +39,9 @@ public class PhotoController {
 
     /**
      * 删除照片
+     *
      * @param photo 被删除的照片
-     * @param zjd  zjd中的 照片
+     * @param zjd   zjd中的 照片
      * @return
      */
     @PostMapping("/deletePhoto")
@@ -43,7 +50,7 @@ public class PhotoController {
 
         Photo photoPo = Tool.getGson().fromJson(photo, Photo.class);
         ZJD zjdPo = zjdService.findById(Tool.getGson().fromJson(zjd, ZJD.class).getId());
-        if(photoPo == null || zjdPo == null){
+        if (photoPo == null || zjdPo == null) {
             return true;
         }
         photoService.deletePhoto(zjdPo, photoPo);
@@ -51,7 +58,29 @@ public class PhotoController {
     }
 
     /**
+     * 删除照片
+     *
+     * @param id 被删除的照片 的 id
+     * @return
+     */
+    @RequestMapping("/deletebyid")
+    public ResultData deletebyid(String id) {
+        if (Tool.isEmpty(id)) {
+            return resultDataService.getErrorResultData("传入的id参数为空");
+        }
+        Long numid;
+        try {
+            numid = Long.parseLong(id);
+        } catch (Exception e) {
+            return resultDataService.getErrorResultData("传入的id参数不是数字,id="+id);
+        }
+        photoService.deletePhoto(numid);
+        return resultDataService.getSuccessResultData("");
+    }
+
+    /**
      * 修改照片信息
+     *
      * @param photo
      * @param zjd
      * @return
@@ -59,16 +88,55 @@ public class PhotoController {
     @PostMapping("/updatephoto")
     @ResponseBody
     public boolean updatePhoto(String photo, String zjd) {
+        ResultData resultData =  updatePhototoResultdata(photo,zjd);
+        if(resultData.getStatus() == Status.Success){
+            return  true;
+        }else{
+            return  false;
+        }
+    }
+    /**
+     * 修改照片信息
+     *
+     * @param photo
+     * @param zjd
+     * @return 最新的zjd
+     */
+    @PostMapping("/updatePhototoResultdata")
+    @ResponseBody
+    public ResultData updatePhototoResultdata(String photo, String zjd) {
         Photo photoPo = Tool.getGson().fromJson(photo, Photo.class);
+        //如果照片已经有了id，那么 检查照片名字是否被更改，如果更改了 检查是否已经存在了
+
         ZJD zjdPo = zjdService.findById(Tool.getGson().fromJson(zjd, ZJD.class).getId());
 
-         photoService.savePhoto(zjdPo, photoPo);
-        return true;
-    }
 
+        for(Photo p : zjdPo.getPhotos()){
+            if(p.getName().equals(photoPo.getName())){
+                if(photoPo.getId() == null || photoPo.getId().longValue() != p.getId().longValue() ){
+                    //如果是新的照片，或则 id 不同，如果路径相同，就有问题
+                    return resultDataService.getErrorResultData("照片路径相同");
+                }
+            }
+        }
+
+        photoService.savePhoto(zjdPo, photoPo);
+        //宅基地中的照片替换
+        for (int i = 0; i < zjdPo.getPhotos().size(); i++) {
+            Photo p = zjdPo.getPhotos().get(i);
+            if(p.getId() != null &&photoPo.getId() != null ){
+                if(p.getId().longValue() == photoPo.getId().longValue()){
+                    zjdPo.getPhotos().set(i,photoPo);
+                }
+            }
+        }
+        //zjdService.save(zjdPo);
+        return resultDataService.getSuccessResultData(zjdPo);
+    }
 
     /**
      * 多个照片上传
+     *
      * @param uploadFiles
      * @param request
      * @return
@@ -77,7 +145,7 @@ public class PhotoController {
     public String upload(MultipartFile[] uploadFiles, HttpServletRequest request) {
         MultipartHttpServletRequest params = ((MultipartHttpServletRequest) request);
         // 获取文件
-        Map<String,MultipartFile> map =  params.getFileMap();
+        Map<String, MultipartFile> map = params.getFileMap();
         List<ZJD> zjds = photoService.savePhotoFile(map);
         return Tool.getGson().toJson(zjds);
     }
@@ -87,7 +155,7 @@ public class PhotoController {
     public void downloadFile(@RequestParam(name = "ZDNUM") String ZDNUM, @RequestParam(name = "photoname") String photoname, HttpServletRequest request, HttpServletResponse response) throws IOException {
         String path = photoService.dkPhotoDir + ZDNUM + "/" + photoname;
         File file = new File(path);
-        if(!file.exists()){
+        if (!file.exists()) {
             return;
         }
         InputStream f = new FileInputStream(path);
@@ -138,7 +206,7 @@ public class PhotoController {
 // 文件和参数 都在实体中了
         Photo photo = Tool.jsonToObject(uploadHelper.getPhoto(), Photo.class);
 
-        ZJD zjd =  Tool.jsonToObject(uploadHelper.getZjd(), ZJD.class);
+        ZJD zjd = Tool.jsonToObject(uploadHelper.getZjd(), ZJD.class);
         boolean isSuccess = photoService.savePhotoFile(uploadHelper.getFile(), photo, zjd);
         if (isSuccess) {
             zjd = zjdService.findById(zjd.getId());
@@ -154,6 +222,7 @@ public class PhotoController {
 
     /**
      * 上传照片
+     *
      * @param srcFile
      * @param photo
      * @param redirectAttributes
@@ -195,6 +264,29 @@ public class PhotoController {
     }
 
 
+    @RequestMapping(value = "lookphoto")
+    public void lookphoto(String path, HttpServletResponse response) throws IOException {
+
+        response.setContentType("image/png");
+
+        String nativePath = photoService.getNativePath(path);
+        if(!new File(nativePath).exists()){
+            return;
+        }
+        FileInputStream is = new FileInputStream(nativePath);
+
+        if (is != null) {
+            int i = is.available(); // 得到文件大小
+            byte data[] = new byte[i];
+            is.read(data); // 读数据
+            is.close();
+            response.setContentType("image/png");  // 设置返回的文件类型
+            OutputStream toClient = response.getOutputStream(); // 得到向客户端输出二进制数据的对象
+            toClient.write(data); // 输出数据
+            toClient.close();
+        }
+    }
+
     @RequestMapping(value = "pic")
     public void queryPic(@RequestParam(required = false) String adress, HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -214,6 +306,7 @@ public class PhotoController {
         }
 
     }
+
 
 
 }

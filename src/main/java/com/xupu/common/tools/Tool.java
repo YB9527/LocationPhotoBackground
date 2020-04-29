@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import java.io.File;
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 一般工具类
@@ -95,5 +96,32 @@ public class Tool {
      */
     public static  String objectToJson(Object obj){
         return getGson().toJson(obj);
+    }
+
+    /**
+     *
+     * @param list
+     * @return
+     */
+    public static String listToString(List<String> list,String connectsymbol) {
+        if(Tool.isEmpty(list)){
+            return  "";
+        }
+        StringBuilder sb = new StringBuilder();
+        int size = list.size()-1;
+        for (int i = 0; i < size; i++) {
+            sb.append(list.get(i) + connectsymbol);
+        }
+        sb.append(list.get(size));
+        return  sb.toString();
+    }
+
+    /**
+     * 检查 map 集合是否为空
+     * @param map
+     * @return
+     */
+    public static boolean isEmpty(Map map) {
+        return map == null ? true:map.isEmpty();
     }
 }

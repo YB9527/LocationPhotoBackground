@@ -1,19 +1,30 @@
 package com.xupu.xzqy.service;
 
+import com.xupu.common.YBException.ZJDException;
+import com.xupu.common.po.ResultData;
+import com.xupu.common.service.ResultDataService;
 import com.xupu.common.tools.ReflectTool;
+import com.xupu.common.tools.Tool;
 import com.xupu.xzqy.dao.XZDMRepository;
 import com.xupu.xzqy.po.XZDM;
+import com.xupu.zjd.po.ZJD;
+import com.xupu.zjd.service.ZJDService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 public class XZDMService implements IXZDMService {
     @Autowired
     XZDMRepository xzdmRepository;
-
+    @Autowired
+    ZJDService zjdService;
+    private static ResultDataService resultDataService = ResultDataService.getResultDataService();
     private static List<XZDM> xzdms;
 
     /**
@@ -33,7 +44,11 @@ public class XZDMService implements IXZDMService {
      */
     public void flushXzdms() {
         xzdms = findAll();
-        djzqdmMap = ReflectTool.getIDMap("getDJZQDM", getXzdms());
+        try {
+            djzqdmMap = ReflectTool.getIDMap("getDJZQDM", getXzdms());
+        } catch (ZJDException e) {
+            e.printStackTrace();
+        }
     }
 
     private static Map<String, XZDM> djzqdmMap;
@@ -45,9 +60,88 @@ public class XZDMService implements IXZDMService {
      */
     public Map<String, XZDM> getDJZQDMMap() {
         if (djzqdmMap == null) {
-            djzqdmMap = ReflectTool.getIDMap("getDJZQDM", getXzdms());
+            try {
+                djzqdmMap = ReflectTool.getIDMap("getDJZQDM", getXzdms());
+            } catch (ZJDException e) {
+                e.printStackTrace();
+            }
         }
         return djzqdmMap;
+    }
+
+    @Override
+    public ResultData checkXZDMList(List<XZDM> xzdmList) {
+        List<String> errs = new ArrayList<>();
+        String err;
+        for (XZDM xzdm : xzdmList) {
+            if (Tool.isEmpty(xzdm.getDJZQDM())) {
+                err = "行政区域编码有空";
+                if (!errs.contains(err)) {
+                    errs.add(err);
+                }
+            }
+            if (Tool.isEmpty(xzdm.getDJZQMC())) {
+                err = "行政区域名称有空";
+                if (!errs.contains(err)) {
+                    errs.add(err);
+                }
+            }
+        }
+        //检查djzqdm是否重复
+        try {
+            Map<String, XZDM> xzdmMap = ReflectTool.getIDMap("getDJZQDM", xzdmList);
+        } catch (ZJDException e) {
+            err = e.getMessage();
+            if (!errs.contains(err)) {
+                errs.add(err);
+            }
+        }
+        if (errs.size() > 0) {
+            return resultDataService.getErrorResultData(Tool.listToString(errs, ","));
+        }
+        return resultDataService.getSuccessResultData("");
+    }
+
+    @Override
+    public ResultData saveOrUpdate(List<XZDM> newxzdms) {
+        List<XZDM> oldxzdms = findAll();
+        Map<String, XZDM> oldxzdmMap = null;
+        try {
+            oldxzdmMap = ReflectTool.getIDMap("getDJZQDM", oldxzdms);
+        } catch (ZJDException e) {
+            return resultDataService.getErrorResultData("以前数据库中XZDM中DJZQDM重复:" + e.getMessage());
+        }
+        XZDM oldxzdm;
+        String djzqdm;
+        List<XZDM> savexzdms = new ArrayList<>();
+        for (XZDM newxzdm : newxzdms) {
+            djzqdm = newxzdm.getDJZQDM();
+            oldxzdm = oldxzdmMap.get(djzqdm);
+            if (oldxzdm != null) {
+                //交换数据
+                oldxzdm.setDJZQMC(newxzdm.getDJZQMC());
+                newxzdm = oldxzdm;
+            }
+            savexzdms.add(newxzdm);
+        }
+        xzdmRepository.saveAll(savexzdms);
+        return resultDataService.getSuccessResultData("");
+    }
+
+
+    @Transactional
+    @Override
+    public void deleteXZDMs(List<XZDM> xzdmList) {
+        //只检查在宅基地中没有用到的
+        List<ZJD> zjds = zjdService.findAll();
+        Map<String, List<ZJD>> zjdDJZQDMMap = ReflectTool.getListIDMap("getDJZQDM", zjds);
+        Set<String> hasejzd_djzqdm = zjdDJZQDMMap.keySet();
+        for (XZDM xzdm : xzdmList) {
+            String djzqdm = xzdm.getDJZQDM();
+            if (!hasejzd_djzqdm.contains(djzqdm)) {
+                xzdmRepository.delete(xzdm);
+            }
+        }
     }
 
     @Override

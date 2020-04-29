@@ -50,4 +50,23 @@ public interface IPhotoService {
      * @param newZJD
      */
     void updatePhotoPath(ZJD oldZJD, ZJD newZJD);
+
+    /**
+     * 通过android 路径得到宗地编码
+     * @param androidPath
+     * @return
+     */
+    String getDKBMByAndroidPath(String androidPath);
+    /**
+     * 通过android 路径得到本地路径
+     * @param androidPath
+     * @return
+     */
+    String getNativePath(String androidPath);
+
+    /**
+     * 更具id 删除照片， 但是本地的照片是没有被删除
+     * @param id
+     */
+    void deletePhoto(Long id);
 }

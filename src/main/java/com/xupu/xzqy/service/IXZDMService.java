@@ -1,5 +1,6 @@
 package com.xupu.xzqy.service;
 
+import com.xupu.common.po.ResultData;
 import com.xupu.xzqy.po.XZDM;
 
 import java.util.List;
@@ -28,4 +29,22 @@ public interface IXZDMService {
      */
     Map<String, XZDM> getDJZQDMMap();
 
+    /**
+     * 检查 行政代码
+     * @param xzdmList
+     * @return
+     */
+    ResultData checkXZDMList(List<XZDM> xzdmList);
+
+    /**
+     * 保存或者修改行政代码
+     * @param newxzdms
+     */
+    ResultData saveOrUpdate(List<XZDM> newxzdms);
+
+    /**
+     * 只能删除没有关联的行政代码
+     * @param xzdmList
+     */
+    void deleteXZDMs(List<XZDM> xzdmList);
 }

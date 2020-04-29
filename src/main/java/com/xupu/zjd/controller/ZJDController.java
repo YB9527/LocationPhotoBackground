@@ -7,18 +7,20 @@ import com.xupu.common.po.ResultData;
 import com.xupu.common.service.ResultDataService;
 import com.xupu.common.tools.FileTool;
 import com.xupu.common.tools.Tool;
-import com.xupu.xzqy.po.XZDM;
-import com.xupu.zjd.po.ZJD;
 import com.xupu.zjd.po.Photo;
-import com.xupu.zjd.service.IZJDService;
+import com.xupu.zjd.po.ZJD;
 import com.xupu.zjd.service.IPhotoService;
+import com.xupu.zjd.service.IZJDService;
 import com.xupu.zjd.service.ZJDService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -49,6 +51,16 @@ public class ZJDController {
     }
 
     /**
+     * 查询所有地块
+     * @return
+     */
+    @RequestMapping(value = "/findalltoresultdata")
+    public ResultData  findalltoresultdata() {
+        List<ZJD> zjds =  zjdService.findAll();
+        return resultDataService.getSuccessResultData(zjds);
+    }
+
+    /**
      * 根据行政代码 查找 符合的宅基地
      * @return
      */
@@ -76,6 +88,7 @@ public class ZJDController {
         return gson.toJson(zjd);
     }
 
+
     /**
      * 根据 ZDNUM 查询 zjd
      * @return
@@ -102,7 +115,7 @@ public class ZJDController {
             return  resultDataService.getOtherResultData("没有需要保存的地块");
         }
         List<ZJD> zjdsList = Tool.jsonToObject(zjds,new TypeToken<List<ZJD>>(){}.getType());
-        zjdService.saveAll(zjdsList);
+        zjdService.saveOrUpdateAll(zjdsList);
         return  resultDataService.getSuccessResultData("");
     }
     /**
@@ -137,6 +150,24 @@ public class ZJDController {
         zjdService.deleteZJD(zjdPo);
         photoService.deleteAllPhotoByZJD(zjdPo);
         return  resultDataService.getSuccessResultData("");
+    }
+
+    @RequestMapping(value = "/deletezjdbyid")
+    public ResultData deleteZJDByID(String idstr) {
+        if(Tool.isEmpty(idstr)){
+            return  resultDataService.getErrorResultData("没有携带id");
+        }
+        try{
+            Long id =  Long.parseLong(idstr);
+            zjdService.deleteZJDByID(id);
+
+            return  resultDataService.getSuccessResultData("");
+        }catch (Exception e){
+            return  resultDataService.getErrorResultData("传入的不是数字id");
+        }
+
+
+
     }
 
     @RequestMapping(value = "/test")

@@ -1,9 +1,15 @@
 package com.xupu.common.tools;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.nio.channels.FileChannel;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.UUID;
 
 /**
  * 文件处理工具类
@@ -197,5 +203,85 @@ public class FileTool {
             e2.printStackTrace();
         }
 
+    }
+    /**
+     * @param file   数据源
+     * @param upload 新建空数据库
+     * @return
+     */
+
+    public static Boolean savePhotoFile(MultipartFile file, File upload) {
+        try {
+            if (upload.exists()) {
+                upload.delete();//如果已经存在，删除文件
+            }
+            FileTool.exitsDir(upload.getParent(), true);
+
+            //根据srcFile大小，准备一个字节数组
+            byte[] bytes = file.getBytes();
+            //拼接上传路径
+            //Path path = Paths.get(UPLOAD_FOLDER + srcFile.getOriginalFilename());
+            //通过项目路径，拼接上传路径
+            Path path = Paths.get(upload.getAbsolutePath());
+            //** 开始将源文件写入目标地址
+            Files.write(path, bytes);
+            String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+            // 获得文件原始名称
+            String fileName = file.getOriginalFilename();
+            // 获得文件后缀名称
+            String suffixName = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
+            // 生成最新的uuid文件名称
+            String newFileName = uuid + "." + suffixName;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+
+    /**
+     * 删除 所有的文件
+     * @param path
+     * @return 删除成功 或者 没有文件夹返回 true
+     */
+    public static boolean delAllFile(String path) {
+        boolean flag = false;
+        File file = new File(path);
+        if (!file.exists()) {
+            return flag;
+        }
+        if (!file.isDirectory()) {
+            return flag;
+        }
+        String[] tempList = file.list();
+        File temp = null;
+        for (int i = 0; i < tempList.length; i++) {
+            if (path.endsWith(File.separator)) {
+                temp = new File(path + tempList[i]);
+            } else {
+                temp = new File(path + File.separator + tempList[i]);
+            }
+            if (temp.isFile()) {
+                temp.delete();
+            }
+            if (temp.isDirectory()) {
+                delAllFile(path + "/" + tempList[i]);//先删除文件夹里面的文件
+                delFolder(path + "/" + tempList[i]);//再删除空文件夹
+                flag = true;
+            }
+        }
+        return flag;
+    }
+    public static void delFolder(String folderPath) {
+        try {
+            delAllFile(folderPath); //删除完里面所有内容
+            String filePath = folderPath;
+            filePath = filePath.toString();
+            java.io.File myFilePath = new java.io.File(filePath);
+            myFilePath.delete(); //删除空文件夹
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

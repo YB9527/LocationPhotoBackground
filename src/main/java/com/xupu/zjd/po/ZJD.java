@@ -24,7 +24,12 @@ public class ZJD {
     @Expose
     private String QUANLI;
     @Expose
-    private String bz;
+    private String BZ;
+
+    @Lob
+    @Expose
+    private String geometry;
+
     /**
      * 地块是否已经上传,服务器里面的都是true,因为已经存在了
      */
@@ -32,16 +37,10 @@ public class ZJD {
     private Boolean isUpload;
 
 
-
-
-
     @OneToMany(mappedBy = "zjd", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Expose
     private List<Photo> photos;
 
-    @Expose
-    @OneToMany(mappedBy = "zjd", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<ZJDGeometry> zjdGeometry;//考虑多部件情况
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = true)
     @Expose
@@ -53,12 +52,12 @@ public class ZJD {
     @Expose
     private String DJZQDM;
 
-    public String getBz() {
-        return bz;
+    public String getBZ() {
+        return BZ;
     }
 
-    public void setBz(String bz) {
-        this.bz = bz;
+    public void setBZ(String BZ) {
+        this.BZ = BZ;
     }
 
     public String getDJZQDM() {
@@ -75,12 +74,13 @@ public class ZJD {
         this.DJZQDM = DJZQDM;
     }
 
-    public List<ZJDGeometry> getZjdGeometry() {
-        return zjdGeometry;
+
+    public String getGeometry() {
+        return geometry;
     }
 
-    public void setZjdGeometry(List<ZJDGeometry> zjdGeometry) {
-        this.zjdGeometry = zjdGeometry;
+    public void setGeometry(String geometry) {
+        this.geometry = geometry;
     }
 
     public ZJD() {
