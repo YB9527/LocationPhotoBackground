@@ -12,7 +12,7 @@
     <artifactId>locationphotobackground</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>locationphotobackground</name>
-    <description>locationphotobackground project for Spring Boot</description>
+    <description>locationphotobackground project for Spring Boot </description>
 
 
     <properties>
