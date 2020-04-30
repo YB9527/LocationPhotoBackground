@@ -53,7 +53,7 @@ public class RedisService implements IRedisService {
         if (json == null) {
             return null;
         }
-        List<String> djzqdms = Tool.getGson().fromJson(json, new TypeToken<List<String>>() {
+        final List<String> djzqdms = Tool.getGson().fromJson(json, new TypeToken<List<String>>() {
         }.getType());
         if(djzqdms == null){
             return null;

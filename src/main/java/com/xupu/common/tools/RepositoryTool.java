@@ -11,7 +11,7 @@ import java.util.List;
 
 public class RepositoryTool {
 
-    public  static <T> Specification<T> getSpecification(String cloumn, List<String> list) {
+    public  static <T> Specification<T> getSpecification(final String cloumn,final List<String> list) {
 
         Specification<T> sp = new Specification<T>() {
             @Override

@@ -35,7 +35,7 @@ public class MapService implements IMapService {
             path = dirStr+fileName;
             FileTool.savePhotoFile(map.get(fileName),new File(path));
         }
-        File file = new File( path.substring(1,path.lastIndexOf("."))+".shp");
+        File file = new File( path.substring(0,path.lastIndexOf("."))+".shp");
         path = file.getAbsolutePath();
         List<String> featureJsons = FormatShp.shp2json(path);
         if(Tool.isEmpty(featureJsons)){

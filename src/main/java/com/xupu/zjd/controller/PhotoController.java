@@ -265,13 +265,13 @@ public class PhotoController {
 
 
     @RequestMapping(value = "lookphoto")
-    public void lookphoto(String path, HttpServletResponse response) throws IOException {
+    public ResultData lookphoto(String path, HttpServletResponse response) throws IOException {
 
         response.setContentType("image/png");
 
         String nativePath = photoService.getNativePath(path);
         if(!new File(nativePath).exists()){
-            return;
+            return resultDataService.getErrorResultData("照片不存在："+nativePath);
         }
         FileInputStream is = new FileInputStream(nativePath);
 
@@ -285,6 +285,8 @@ public class PhotoController {
             toClient.write(data); // 输出数据
             toClient.close();
         }
+        //return resultDataService.getSuccessResultData("ok");
+        return  null;
     }
 
     @RequestMapping(value = "pic")

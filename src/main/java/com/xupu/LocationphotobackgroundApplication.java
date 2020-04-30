@@ -2,12 +2,14 @@ package com.xupu;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-//@EnableAutoConfiguration(exclude = DataSourceAutoConfiguration.class)  extends SpringBootServletInitializer
+//@EnableAutoConfiguration(exclude = DataSourceAutoConfiguration.class)
 @SpringBootApplication
-public class LocationphotobackgroundApplication  {
+public class LocationphotobackgroundApplication  extends SpringBootServletInitializer {
 
 
     public static void main(String[] args) {
@@ -15,7 +17,7 @@ public class LocationphotobackgroundApplication  {
     }
     @RestController
     public class HelloController {
-        @RequestMapping("/hello")
+        @RequestMapping("/")
         public String hello() {
 
 
@@ -23,11 +25,11 @@ public class LocationphotobackgroundApplication  {
             return "Hello Spring Boot!";
         }
     }
-    // 用于构建war文件并进行部署
-  /*  @Override
-    protected SpringApplicationBuilder configure(
-            SpringApplicationBuilder builder) {
-        return builder.sources(this.getClass());
-    }*/
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+        // 注意这里要指向原先用main方法执行的Application启动类
+        return builder.sources(LocationphotobackgroundApplication.class);
+    }
+
 
 }

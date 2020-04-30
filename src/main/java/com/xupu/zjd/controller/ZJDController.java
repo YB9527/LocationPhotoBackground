@@ -132,6 +132,8 @@ public class ZJDController {
 
         //修改照片路径
         ZJD oldZJD = zjdService.findById(zjdPo.getId());
+        zjdPo.setXzdm(oldZJD.getXzdm());
+        zjdPo.setDJZQDM(oldZJD.getDJZQDM());
         photoService.updatePhotoPath(oldZJD,zjdPo);
         zjdService.save(zjdPo);
         return  resultDataService.getSuccessResultData("");
