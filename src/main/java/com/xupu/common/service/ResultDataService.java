@@ -87,4 +87,10 @@ public class ResultDataService {
         errMessageResultData.setMessage(tip);
         return  errMessageResultData;
     }
+
+    public ResultData getSuccessMessageResultData(String message) {
+        ResultData resultData = getSuccessResultData("");
+        resultData.setMessage(message);
+        return  resultData;
+    }
 }

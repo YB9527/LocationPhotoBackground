@@ -139,7 +139,7 @@ public class ZJDController {
         return  resultDataService.getSuccessResultData("");
     }
     /**
-    * 删除宅基地， 和 所属的宅基地
+    * 删除宅基地， 和 所属的照片
      * @param po
      */
     @PostMapping("/deletezjd")

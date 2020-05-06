@@ -2,6 +2,7 @@ package com.xupu.common.tools;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.xupu.common.YBException.ZJDException;
 
 import java.io.File;
 import java.lang.reflect.Type;
@@ -123,5 +124,19 @@ public class Tool {
      */
     public static boolean isEmpty(Map map) {
         return map == null ? true:map.isEmpty();
+    }
+
+    /**
+     * 将数字 转换为 长整型
+     * @param str
+     * @return
+     * @throws ZJDException
+     */
+    public static Long parseLong(String str) throws ZJDException {
+        try {
+            return  Long.parseLong(str);
+        }catch (Exception e){
+                throw  new ZJDException("要转变的参数不是数字类型 ："+str);
+        }
     }
 }

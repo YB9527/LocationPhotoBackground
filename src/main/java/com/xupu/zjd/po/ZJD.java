@@ -1,6 +1,7 @@
 package com.xupu.zjd.po;
 
 import com.google.gson.annotations.Expose;
+import com.xupu.project.po.Project;
 import com.xupu.usermanager.po.User;
 import com.xupu.xzqy.po.XZDM;
 
@@ -49,6 +50,11 @@ public class ZJD {
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = true)
     @Expose
     private XZDM xzdm;
+
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = true)
+    @Expose
+    private Project project;
+
     @Expose
     private String DJZQDM;
 
