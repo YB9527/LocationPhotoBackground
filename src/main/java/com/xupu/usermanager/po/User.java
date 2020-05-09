@@ -1,13 +1,16 @@
 package com.xupu.usermanager.po;
 
 import com.google.gson.annotations.Expose;
+import com.xupu.project.po.Project;
+import com.xupu.xzqy.po.XZDM;
 import com.xupu.zjd.po.ZJD;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+//@Table(name = "userTab")
 public class User {
     @Expose
     @Id
@@ -42,9 +45,9 @@ public class User {
     /**
      * 管理的行政区域
      */
-    @Expose
+   /* @Expose
     @ElementCollection
-    private List<String> djzqdms;
+    private List<String> djzqdms;*/
     /**
      * 用户邮箱，用于找回密码
      */
@@ -52,8 +55,48 @@ public class User {
     private String email;
 
 
+    /**
+     * 一个人管理的行政区域
+     */
+    @OneToMany(mappedBy = "user",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+    @Expose
+    private List<XZDM> xzdms;
+
+
     @OneToMany(mappedBy = "user",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
     private List<ZJD> zjds;
+    /**
+     * 一个人可以做多个项目
+      */
+    @ManyToMany(mappedBy = "users")
+    private List<Project> projects;
+
+
+
+    public  User(){
+
+    }
+
+    public User(String account, String nickName, String password, String email) {
+        this.account = account;
+        this.nickName = nickName;
+        this.password = password;
+        this.email = email;
+    }
+
+    public List<Project> getProjects() {
+        if(projects == null){
+            projects = new ArrayList<>();
+        }
+        return projects;
+    }
+
+    public void setProjects(List<Project> projects) {
+        this.projects = projects;
+    }
+
+
+
 
     public String getAccount() {
         return account;
@@ -121,13 +164,7 @@ public class User {
         this.level = level;
     }
 
-    public List<String> getDjzqdms() {
-        return djzqdms;
-    }
 
-    public void setDjzqdms(List<String> djzqdms) {
-        this.djzqdms = djzqdms;
-    }
 
     @Override
     public String toString() {

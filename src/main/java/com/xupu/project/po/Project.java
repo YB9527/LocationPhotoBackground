@@ -1,7 +1,8 @@
 package com.xupu.project.po;
 
 import com.google.gson.annotations.Expose;
-import com.xupu.zjd.po.ZJD;
+import com.xupu.usermanager.po.User;
+import com.xupu.xzqy.po.XZDM;
 
 import javax.persistence.*;
 import java.util.List;
@@ -22,10 +23,49 @@ public class Project {
     private String notes;
 
     /**
-     * 不参与数据的映射
+     * 顶级行政代码， 导入的数据只能包含这个代码，
      */
-    @Transient
-    private List<ZJD> zjds;
+    @Expose
+    private String djzqdm;
+
+    @Expose
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<XZDM> xzdms;
+    /**
+     * 一个人可以做多个项目
+     */
+    @ManyToMany
+    @JoinTable(name = "project_user",joinColumns = @JoinColumn(name = "project_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    @Expose
+    private  List<User> users;
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
+    public List<XZDM> getXzdms() {
+        return xzdms;
+    }
+
+    public void setXzdms(List<XZDM> xzdms) {
+        this.xzdms = xzdms;
+    }
+
+
+    public String getDjzqdm() {
+        return djzqdm;
+    }
+
+    public void setDjzqdm(String djzqdm) {
+        this.djzqdm = djzqdm;
+    }
+
+
 
     public Long getId() {
         return id;
@@ -59,11 +99,5 @@ public class Project {
         this.notes = notes;
     }
 
-    public List<ZJD> getZjds() {
-        return zjds;
-    }
 
-    public void setZjds(List<ZJD> zjds) {
-        this.zjds = zjds;
-    }
 }

@@ -25,4 +25,6 @@ public interface IProjectService {
      * @return
      */
     ResultData deleteById(Long id);
+
+    ResultData updateProjectUser(Project projectPo);
 }

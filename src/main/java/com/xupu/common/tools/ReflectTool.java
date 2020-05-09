@@ -46,6 +46,32 @@ public class ReflectTool {
         return map;
     }
 
+    public static <T, T2> Map<T, T2> getIDMap(String methodName, List<T2> list) throws ZJDException {
+        Map<T, T2> map = new HashMap<>();
+        if (Tool.isEmpty(list)) {
+            return map;
+        }
+        Class clazz = list.get(0).getClass();
+        Method m = null;
+
+        //Object[] paramters =new Object[1];
+        try {
+            m = clazz.getMethod(methodName);
+            for (T2 t : list
+            ) {
+                T key = (T) m.invoke(t);
+                if (map.containsKey(key)) {
+                    throw new ZJDException("主键重复：" + key);
+                } else {
+                    map.put(key, t);
+                }
+            }
+        } catch (Exception e) {
+            throw new ZJDException(e.getMessage());
+        }
+        return map;
+    }
+
     enum MethodNameEnum {
         set,
         get,
@@ -60,17 +86,21 @@ public class ReflectTool {
         return reflectTool;
     }
 
-    /**
+   /* *//**
      * @param methodName map 的主键值 ，T对象的 methodName 不允许重复
      * @param list
      * @param <T>
      * @return
-     */
+     *//*
     public static <T> Map<String, T> getIDMap(String methodName, List<T> list) throws ZJDException {
-        Map<String, T> map = new HashMap<>();
-        if (Tool.isEmpty(list)) {
-            return map;
+        Class clazz=null;
+        if (!Tool.isEmpty(list)) {
+            clazz = list.get(0).getClass();
         }
+        Map<String, T> map = getIDMap(methodName, list,clazz);
+        return map;
+        *//*Map<String, T> map = new HashMap<>();
+
         Class tClass = list.get(0).getClass();
         Method m = null;
         //Object[] paramters =new Object[1];
@@ -89,8 +119,8 @@ public class ReflectTool {
         } catch (Exception e) {
             throw new ZJDException(e.getMessage());
         }
-        return map;
-    }
+        return map;*//*
+    }*/
 
 
     /**

@@ -68,8 +68,8 @@ public class FormatShp {
     }
 
     public static void WriteStringToFile(String string) {
-        System.out.println(string);
-       /* String filePath="E:\\shp\\point.geojson";
+    /*    System.out.println(string);
+        String filePath="E:\\shp\\point.geojson";
         try {
             File file = new File(filePath);
             PrintStream ps = new PrintStream(new FileOutputStream(file));

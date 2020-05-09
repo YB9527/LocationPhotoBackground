@@ -2,11 +2,9 @@ package com.xupu.usermanager.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xupu.common.po.ResultData;
-import com.xupu.usermanager.po.Level;
 import com.xupu.usermanager.po.User;
 
 import java.util.List;
-import java.util.Map;
 
 public interface IUserService {
     /**
@@ -41,4 +39,14 @@ public interface IUserService {
     User findById(Long id);
 
     List<JSONObject> findLevels();
+
+    void saveUsers(List<User> users);
+
+    /**
+     * 查询已经注册的用户
+     * @return
+     */
+    List<User> findRegistUsers();
+
+
 }

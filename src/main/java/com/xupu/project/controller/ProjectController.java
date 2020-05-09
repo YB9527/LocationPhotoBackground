@@ -1,5 +1,6 @@
 package com.xupu.project.controller;
 
+import com.google.gson.Gson;
 import com.xupu.common.YBException.ZJDException;
 import com.xupu.common.po.ResultData;
 import com.xupu.common.service.ResultDataService;
@@ -42,5 +43,21 @@ public class ProjectController {
         } catch (ZJDException e) {
           return   resultDataService.getErrorResultData(e.getMessage());
         }
+    }
+
+    /**
+     * 修改项目人员
+     * @param project
+     * @return
+     */
+    @PostMapping(value = "/updateprojectuser")
+    @ResponseBody
+    public ResultData updateProjectUser(String project) {
+
+        Project projectPo = new Gson().fromJson(project, Project.class);
+        if(projectPo  == null){
+            return  resultDataService.getErrorResultData("没有收到项目对象");
+        }
+        return  projectService.updateProjectUser(projectPo);
     }
 }

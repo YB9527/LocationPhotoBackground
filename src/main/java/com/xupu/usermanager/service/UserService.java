@@ -1,9 +1,7 @@
 package com.xupu.usermanager.service;
 
 import com.alibaba.fastjson.JSONObject;
-import com.xupu.common.po.Redis;
 import com.xupu.common.po.ResultData;
-import com.xupu.common.po.Status;
 import com.xupu.common.service.IRedisService;
 import com.xupu.common.service.ResultDataService;
 import com.xupu.common.tools.DateTool;
@@ -13,11 +11,11 @@ import com.xupu.usermanager.po.Level;
 import com.xupu.usermanager.po.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.unit.DataUnit;
-import org.thymeleaf.util.DateUtils;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.xml.crypto.Data;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Service
 public class UserService implements IUserService {
@@ -127,5 +125,22 @@ public class UserService implements IUserService {
     @Override
     public List<JSONObject> findLevels() {
         return levels;
+    }
+
+    @Transactional
+    @Override
+    public void saveUsers(List<User> users) {
+        for (User user : users) {
+            if (checkUser(user) != null) {
+                return;
+            }
+        }
+        userRepository.saveAll(users);
+    }
+
+    @Override
+    public List<User> findRegistUsers() {
+
+        return userRepository.findRegistUsers();
     }
 }

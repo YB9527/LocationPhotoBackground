@@ -16,7 +16,6 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/locationphoto?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
     username: root
     password: 1234
-
   jpa:
     properties:
       hibernate:
