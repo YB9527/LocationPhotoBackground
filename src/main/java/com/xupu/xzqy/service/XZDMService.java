@@ -5,6 +5,8 @@ import com.xupu.common.po.ResultData;
 import com.xupu.common.service.ResultDataService;
 import com.xupu.common.tools.ReflectTool;
 import com.xupu.common.tools.Tool;
+import com.xupu.project.po.Project;
+import com.xupu.project.service.IProjectService;
 import com.xupu.xzqy.dao.XZDMRepository;
 import com.xupu.xzqy.po.XZDM;
 import com.xupu.zjd.po.ZJD;
@@ -21,9 +23,11 @@ import java.util.Set;
 @Service
 public class XZDMService implements IXZDMService {
     @Autowired
-    XZDMRepository xzdmRepository;
+    private XZDMRepository xzdmRepository;
     @Autowired
-    ZJDService zjdService;
+    private ZJDService zjdService;
+    @Autowired
+    private IProjectService projectService;
     private static ResultDataService resultDataService = ResultDataService.getResultDataService();
     private static List<XZDM> xzdms;
 
@@ -70,6 +74,16 @@ public class XZDMService implements IXZDMService {
     }
 
     @Override
+    public Map<String, XZDM> getDJZQDMMap(List<XZDM> xzdms) {
+        try {
+            return ReflectTool.getIDMap("getDJZQDM", xzdms);
+        } catch (ZJDException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
     public ResultData checkXZDMList(List<XZDM> xzdmList) {
         List<String> errs = new ArrayList<>();
         String err;
@@ -105,6 +119,12 @@ public class XZDMService implements IXZDMService {
     @Override
     public ResultData saveOrUpdate(List<XZDM> newxzdms) {
         List<XZDM> oldxzdms = findAll();
+        return saveOrUpdate(oldxzdms, newxzdms);
+
+    }
+
+    @Override
+    public ResultData saveOrUpdate(List<XZDM> oldxzdms, List<XZDM> newxzdms) {
         Map<String, XZDM> oldxzdmMap = null;
         try {
             oldxzdmMap = ReflectTool.getIDMap("getDJZQDM", oldxzdms);
@@ -128,6 +148,47 @@ public class XZDMService implements IXZDMService {
         return resultDataService.getSuccessResultData("");
     }
 
+    @Override
+    public ResultData saveSetUser(List<XZDM> xzdmList) {
+
+        xzdmRepository.saveAll(xzdmList);
+        return resultDataService.getSuccessResultData("");
+    }
+
+    @Override
+    public ResultData saveZJDs(List<XZDM> xzdmList) {
+        xzdmRepository.saveAll(xzdmList);
+        return resultDataService.getSuccessResultData("");
+    }
+
+    @Override
+    public ResultData importZJDs(Long projectid, List<XZDM> xzdmList) {
+        Project project = projectService.findById(projectid);
+        for (XZDM xzdm : xzdmList) {
+            xzdm.setProject(project);
+            for (ZJD zjd : xzdm.getZjds()) {
+                zjd.setXzdmid(xzdm.getId());
+                zjd.setXzdm(xzdm);
+            }
+        }
+        return saveZJDs(xzdmList);
+    }
+
+    @Override
+    public List<ZJD> getZJDAll(List<XZDM> xzdmList) {
+        List<ZJD> zjds = new ArrayList<>();
+        for (XZDM xzdm : xzdmList) {
+
+            zjds.addAll(zjdService.findByXZDMid(xzdm.getId()));
+        }
+        return zjds;
+    }
+
+    @Override
+    public List<XZDM> findByProjectId(Long projectid) {
+        List<XZDM> list = xzdmRepository.findByProjectid(projectid);
+        return list;
+    }
 
     @Transactional
     @Override

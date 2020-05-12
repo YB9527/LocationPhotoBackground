@@ -2,6 +2,7 @@ package com.xupu.project.service;
 
 import com.xupu.common.po.ResultData;
 import com.xupu.project.po.Project;
+import com.xupu.xzqy.po.XZDM;
 
 import java.util.List;
 
@@ -26,5 +27,26 @@ public interface IProjectService {
      */
     ResultData deleteById(Long id);
 
+    /**
+     * 修改项目的 user
+     * @param projectPo
+     * @return
+     */
     ResultData updateProjectUser(Project projectPo);
+
+    /**
+     * 导入项目行政代码
+     * @param id
+     * @param newxzdms 新添加的行政代码
+     * @return
+     */
+    ResultData importXZDMs(Long id, List<XZDM> newxzdms);
+
+   ;
+
+    ResultData findByIdToResultData(Long idL);
+
+    Project findById(Long idL);
+
+
 }

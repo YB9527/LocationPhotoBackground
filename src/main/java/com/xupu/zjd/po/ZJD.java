@@ -16,7 +16,7 @@ public class ZJD {
     @Expose
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "objectid")
+    @Column(name = "objectid")//columnDefinition="表注释"
     private Long id;
    // @Column(nullable = false)
     @Expose
@@ -26,7 +26,7 @@ public class ZJD {
     private String QUANLI;
     @Expose
     private String BZ;
-    //@Lob
+    @Lob
     @Expose
     private String geometry;
 
@@ -45,19 +45,31 @@ public class ZJD {
     @Expose
     private List<Photo> photos;
 
-
+    //宅基地上传者
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = true)
     @Expose
-    private User user;
+    private User usercreate;
 
+    //任务分配者
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = true)
     @Expose
+    private User usertask;
+
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = true)
     private XZDM xzdm;
 
 
-
     @Expose
-    private String DJZQDM;
+    private Long xzdmid;
+
+
+    public Long getXzdmid() {
+        return xzdmid;
+    }
+
+    public void setXzdmid(Long xzdmid) {
+        this.xzdmid = xzdmid;
+    }
 
     public String getBZ() {
         return BZ;
@@ -67,9 +79,7 @@ public class ZJD {
         this.BZ = BZ;
     }
 
-    public String getDJZQDM() {
-        return DJZQDM;
-    }
+
     public Boolean getUpload() {
         return true;
     }
@@ -77,9 +87,7 @@ public class ZJD {
     public void setUpload(Boolean upload) {
         isUpload = true;
     }
-    public void setDJZQDM(String DJZQDM) {
-        this.DJZQDM = DJZQDM;
-    }
+
 
 
     public String getGeometry() {
@@ -115,12 +123,20 @@ public class ZJD {
         this.xzdm = xzdm;
     }
 
-    public User getUser() {
-        return user;
+    public User getUsercreate() {
+        return usercreate;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUsercreate(User usercreate) {
+        this.usercreate = usercreate;
+    }
+
+    public User getUsertask() {
+        return usertask;
+    }
+
+    public void setUsertask(User usertask) {
+        this.usertask = usertask;
     }
 
     public List<Photo> getPhotos() {

@@ -2,7 +2,6 @@ package com.xupu.usermanager.po;
 
 import com.google.gson.annotations.Expose;
 import com.xupu.project.po.Project;
-import com.xupu.xzqy.po.XZDM;
 import com.xupu.zjd.po.ZJD;
 
 import javax.persistence.*;
@@ -58,13 +57,19 @@ public class User {
     /**
      * 一个人管理的行政区域
      */
-    @OneToMany(mappedBy = "user",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+   /* @OneToMany(mappedBy = "user",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
     @Expose
-    private List<XZDM> xzdms;
+    private List<XZDM> xzdms;*/
+
+   //创建者
+    @OneToMany(mappedBy = "usercreate",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+    private List<ZJD> zjdsCreate;
 
 
-    @OneToMany(mappedBy = "user",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-    private List<ZJD> zjds;
+    //所拥有的任务
+    @OneToMany(mappedBy = "usertask",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+    private List<ZJD> zjdsTask;
+
     /**
      * 一个人可以做多个项目
       */
@@ -130,15 +135,21 @@ public class User {
         this.registDate = registDate;
     }
 
-    public List<ZJD> getZjds() {
-        return zjds;
+    public List<ZJD> getZjdsCreate() {
+        return zjdsCreate;
     }
 
-    public void setZjds(List<ZJD> zjds) {
-        this.zjds = zjds;
+    public void setZjdsCreate(List<ZJD> zjdsCreate) {
+        this.zjdsCreate = zjdsCreate;
     }
 
+    public List<ZJD> getZjdsTask() {
+        return zjdsTask;
+    }
 
+    public void setZjdsTask(List<ZJD> zjdsTask) {
+        this.zjdsTask = zjdsTask;
+    }
 
     public String getEmail() {
         return email;
@@ -165,7 +176,6 @@ public class User {
     }
 
 
-
     @Override
     public String toString() {
         return "User{" +
@@ -173,10 +183,12 @@ public class User {
                 ", account='" + account + '\'' +
                 ", nickName='" + nickName + '\'' +
                 ", password='" + password + '\'' +
-                ", registDate=" + registDate +
+                ", registDate='" + registDate + '\'' +
                 ", level=" + level +
                 ", email='" + email + '\'' +
-                ", zjds=" + zjds +
+                ", zjdsCreate=" + zjdsCreate +
+                ", zjdsTask=" + zjdsTask +
+                ", projects=" + projects +
                 '}';
     }
 }

@@ -72,6 +72,44 @@ public class ReflectTool {
         return map;
     }
 
+    /**
+     * 老对象字段替换 成新对象的字段  只改基本对象
+     *
+     * @param oldT
+     * @param newT
+     * @param methodCustom
+     */
+    public static <T> void replaceFiled(T oldT, T newT, MethodCustom methodCustom) {
+        Map<String, Method> getMethodName = methodCustom.getMethodMap;
+        for (Method setM : methodCustom.setMehods) {
+            try {
+                Object obj = getMethodName.get(setM.getName().replace("set", "get")).invoke(newT, null);
+                if (obj != null) {
+                    if (obj.getClass().isPrimitive()) {
+                        setM.invoke(oldT, obj);
+                    }
+                    switch (obj.getClass().getName()) {
+                        case "Double":
+                        case "Long":
+                        case "Integer":
+                        case "Float":
+                        case "String":
+                        case "Boolean":
+                            setM.invoke(oldT, obj);
+                            break;
+                        default:
+                            break;
+                    }
+                } else {
+                    setM.invoke(oldT, obj);
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     enum MethodNameEnum {
         set,
         get,
@@ -86,7 +124,8 @@ public class ReflectTool {
         return reflectTool;
     }
 
-   /* *//**
+    /* */
+    /**
      * @param methodName map 的主键值 ，T对象的 methodName 不允许重复
      * @param list
      * @param <T>
@@ -122,6 +161,7 @@ public class ReflectTool {
         return map;*//*
     }*/
 
+    private static Map<String, MethodCustom> methodCustomMap = new HashMap<>();
 
     /**
      * 包含 get方法 、 set方法集合
@@ -131,19 +171,31 @@ public class ReflectTool {
         private static MethodCustom methodCustom = null;
 
         public static <T> MethodCustom getInstance(Class<T> tClass) {
+            methodCustom = methodCustomMap.get(tClass.getName());
+            if (methodCustom != null) {
+                return methodCustom;
+            }
             methodCustom = new MethodCustom();
             methodCustom.getMethods = new ArrayList<>();
             methodCustom.setMehods = new ArrayList<>();
+            methodCustom.getMethodMap = new HashMap<>();
+            methodCustom.setetMethodMap = new HashMap<>();
             Method[] ms = tClass.getMethods();
             for (Method m :
                     ms) {
                 String name = m.getName();
+                if (name.equals("getId") || name.equals("setId") || name.equals("getClass") || name.equals("setClass")) {
+                    continue;
+                }
                 if (name.startsWith("get")) {
                     methodCustom.getMethods.add(m);
+                    methodCustom.getMethodMap.put(name, m);
                 } else if (name.startsWith("set")) {
                     methodCustom.setMehods.add(m);
+                    methodCustom.setetMethodMap.put(name, m);
                 }
             }
+            methodCustomMap.put(tClass.getName(), methodCustom);
             return methodCustom;
         }
 
@@ -153,6 +205,8 @@ public class ReflectTool {
 
         private List<Method> getMethods;
         private List<Method> setMehods;
+        private Map<String, Method> getMethodMap;
+        private Map<String, Method> setetMethodMap;
 
         public List<Method> getGetMethods() {
             return getMethods;
@@ -171,6 +225,29 @@ public class ReflectTool {
             this.setMehods = setMehods;
         }
 
+        public Map<String, Method> getGetMethodMap() {
+            return getMethodMap;
+        }
+
+        public void setGetMethodMap(Map<String, Method> getMethodMap) {
+            this.getMethodMap = getMethodMap;
+        }
+
+        public Map<String, Method> getSetetMethodMap() {
+            return setetMethodMap;
+        }
+
+        public void setSetetMethodMap(Map<String, Method> setetMethodMap) {
+            this.setetMethodMap = setetMethodMap;
+        }
+
+        public MethodCustom getMethodCustom() {
+            return methodCustom;
+        }
+
+        public void setMethodCustom(MethodCustom methodCustom) {
+            MethodCustom.methodCustom = methodCustom;
+        }
     }
 
 

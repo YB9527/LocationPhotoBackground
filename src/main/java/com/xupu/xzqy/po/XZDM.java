@@ -2,10 +2,10 @@ package com.xupu.xzqy.po;
 
 import com.google.gson.annotations.Expose;
 import com.xupu.project.po.Project;
-import com.xupu.usermanager.po.User;
 import com.xupu.zjd.po.ZJD;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,23 +24,35 @@ public class XZDM {
     /**
      * 不参与数据的映射
      */
+   /* @Expose
+    @ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH},optional=false)//可选属性optional=false,表示author不能为空。删除文章，不影响用户
+    @JoinColumn(name="zjd_id")//设置在article表中的关联字段(外键)
+    */
+    @Expose
+    //@OneToMany(mappedBy = "xzdm", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Transient
     private List<ZJD> zjds;
+    //@ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH},optional=true)
+   //private User user;
+    @Expose
+    private Long projectid;
 
-    @ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH},optional=true)
-   private User user;
+    public Long getProjectId() {
+        return   this.projectid =project.getId();
+    }
 
-    @ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH},optional=false)
+    public void setProjectId(Long projectid) {
+        if(this.project != null){
+            this.projectid =project.getId();
+        }else{
+            this.projectid = null;
+        }
+    }
+
+    //@ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH},optional=false)
+    @Transient
     private Project project;
 
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 
     public Project getProject() {
         return project;
@@ -64,6 +76,9 @@ public class XZDM {
     }
 
     public List<ZJD> getZjds() {
+        if(zjds == null){
+            zjds = new ArrayList<>();
+        }
         return zjds;
     }
 

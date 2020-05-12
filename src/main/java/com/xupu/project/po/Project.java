@@ -5,6 +5,7 @@ import com.xupu.usermanager.po.User;
 import com.xupu.xzqy.po.XZDM;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -28,8 +29,9 @@ public class Project {
     @Expose
     private String djzqdm;
 
-    @Expose
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    //@Expose
+    //@OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Transient
     private List<XZDM> xzdms;
     /**
      * 一个人可以做多个项目
@@ -49,6 +51,9 @@ public class Project {
     }
 
     public List<XZDM> getXzdms() {
+        if(xzdms == null){
+            xzdms = new ArrayList<>();
+        }
         return xzdms;
     }
 

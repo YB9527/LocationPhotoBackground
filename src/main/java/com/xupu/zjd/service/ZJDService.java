@@ -3,16 +3,20 @@ package com.xupu.zjd.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xupu.common.YBException.ZJDException;
+import com.xupu.common.po.ResultData;
+import com.xupu.common.service.ResultDataService;
 import com.xupu.common.tools.JSONTool;
 import com.xupu.common.tools.ReflectTool;
 import com.xupu.common.tools.RepositoryTool;
 import com.xupu.common.tools.Tool;
+import com.xupu.project.po.Project;
+import com.xupu.project.service.IProjectService;
 import com.xupu.usermanager.po.User;
+import com.xupu.usermanager.service.IUserService;
 import com.xupu.xzqy.po.XZDM;
 import com.xupu.xzqy.service.IXZDMService;
 import com.xupu.zjd.dao.ZJDRepository;
 import com.xupu.zjd.po.ZJD;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -28,21 +32,27 @@ public class ZJDService implements IZJDService {
     private ZJDRepository zjdRepository;
     @Autowired
     private IXZDMService xzdmService;
+    @Autowired
+    private IProjectService projectService;
+    @Autowired
+    private IUserService userService;
 
+    private ResultDataService resultDataService = ResultDataService.getResultDataService();
 
     @Override
     public List<ZJD> findAll() {
         return zjdRepository.findAll();
     }
 
+
     @Transactional
     @Override
     public void saveOrUpdateAll(List<ZJD> zjds) {
         if (!Tool.isEmpty(zjds)) {
             List<ZJD> oldZJDs = findAll();
-            Map<String,ZJD> oldZJDMap = null;
+            Map<String, ZJD> oldZJDMap = null;
             try {
-                oldZJDMap = ReflectTool.getIDMap("getZDNUM",oldZJDs);
+                oldZJDMap = ReflectTool.getIDMap("getZDNUM", oldZJDs);
             } catch (ZJDException e) {
                 e.printStackTrace();
             }
@@ -53,23 +63,70 @@ public class ZJDService implements IZJDService {
 
                 if (zdnum != null && zdnum.length() == 19) {
                     ZJD oldZJD = oldZJDMap.get(zdnum);
-                    if(oldZJD != null){
+                    if (oldZJD != null) {
                         //替换原来的宅基地
                         oldZJD.setQUANLI(zjd.getQUANLI());
                         int index = zjds.indexOf(zjd);
-                        zjds.set(index,oldZJD);
+                        zjds.set(index, oldZJD);
                         oldZJD.setBZ(zjd.getBZ());
                     }
-                    String djzqdm = zdnum.replace("JA", "").replace("JB", "").replace("JC","").substring(0, 14);
+                    String djzqdm = zdnum.replace("JA", "").replace("JB", "").replace("JC", "").substring(0, 14);
                     XZDM xzdm = xzdmMap.get(djzqdm);
                     zjd.setXzdm(xzdm);
                     zjd.setUpload(true);
-                    zjd.setDJZQDM(djzqdm);
+                    zjd.setXzdmid(xzdm.getId());
                 }
             }
             zjdRepository.saveAll(zjds);
         }
     }
+
+    @Transactional
+    @Override
+    public ResultData saveOrUpdateAll2(Long projectId, List<ZJD> zjds) {
+
+
+        if (!Tool.isEmpty(zjds)) {
+            Project project = projectService.findById(projectId);
+            if (project == null) {
+                return resultDataService.getErrorResultData("数据库库中没有找到这个项目");
+            }
+
+            List<ZJD> oldZJDs = new ArrayList<>();
+
+            for (XZDM xzdm : project.getXzdms()) {
+                oldZJDs.addAll(xzdm.getZjds());
+            }
+
+
+            Map<String, ZJD> oldZJDMap = null;
+            try {
+                oldZJDMap = ReflectTool.getIDMap("getZDNUM", oldZJDs);
+            } catch (ZJDException e) {
+                return resultDataService.getErrorResultData(e.getMessage());
+            }
+            ReflectTool.MethodCustom methodCustom = ReflectTool.MethodCustom.getInstance(ZJD.class);
+
+            Map<String, XZDM> xzdmMap = xzdmService.getDJZQDMMap(project.getXzdms());
+            for (int i = 0; i < zjds.size(); i++) {
+
+                ZJD zjd = zjds.get(i);
+                zjd.setXzdmid(zjd.getXzdm().getId());
+                //zjd.getXzdm().setProject(xzdmMap.get(zjd.getXzdm().getDJZQDM()).getProject());
+                zjd.setXzdmid(zjd.getXzdm().getId());
+                String zdnum = zjd.getZDNUM();
+                ZJD oldZJD = oldZJDMap.get(zdnum);
+
+                if (oldZJD != null) {
+                    ReflectTool.replaceFiled(oldZJD, zjd, methodCustom);
+                    zjds.set(i, oldZJD);
+                }
+            }
+        }
+        zjdRepository.saveAll(zjds);
+        return resultDataService.getSuccessResultData(zjds);
+    }
+
 
     @Override
     public void save(ZJD ZJD) {
@@ -105,14 +162,19 @@ public class ZJDService implements IZJDService {
     }
 
     @Override
-    public List<ZJD> findByDJZQDM(List<String> djzqdms) {
-        if (djzqdms == null) {
+    public List<ZJD> findByXZDMIds(List<Long> xzdmids) {
+        if (xzdmids == null) {
             return findAll();
         }
 
-        Specification sp = RepositoryTool.getSpecification("DJZQDM", djzqdms);
+        Specification sp = RepositoryTool.getSpecificationEqu("xzdmid", xzdmids);
         List<ZJD> list = zjdRepository.findAll(sp);
         return list;
+    }
+
+    @Override
+    public List<ZJD> findByXZDMid(Long xzdmid) {
+        return zjdRepository.findByXzdmid(xzdmid);
     }
 
     @Override
@@ -121,8 +183,8 @@ public class ZJDService implements IZJDService {
     }
 
     @Override
-    public List<ZJD> findByDJZQDM(Long id, List<String> djzqdms) {
-        List<ZJD> zjds = findByDJZQDM(djzqdms);
+    public List<ZJD> findByXZDMIds(Long id, List<Long> xzdmids) {
+        List<ZJD> zjds = findByXZDMIds(xzdmids);
         if (id == null) {
             return zjds;
         }
@@ -131,7 +193,7 @@ public class ZJDService implements IZJDService {
         if (zjds != null) {
             for (ZJD zjd : zjds
             ) {
-                User user = zjd.getUser();
+                User user = zjd.getUsercreate();
                 if (user == null || idValue == user.getId().longValue()) {
                     results.add(zjd);
                 }
@@ -197,8 +259,21 @@ public class ZJDService implements IZJDService {
     }
 
     @Override
-    public void deleteZJDByID(Long id ) {
+    public void deleteZJDByID(Long id) {
 
         zjdRepository.deleteById(id);
+    }
+
+    @Override
+    public ResultData SetUser(Long userid, List<ZJD> zjds) {
+        if(Tool.isEmpty(zjds)){
+            return  resultDataService.getErrorResultData("没有选择任何的宅基地");
+        }
+        User user = userService.findById(userid);
+        for (ZJD zjd : zjds) {
+            zjd.setUsertask(user);
+        }
+        zjdRepository.saveAll(zjds);
+        return resultDataService.getSuccessResultData("");
     }
 }
