@@ -1,15 +1,11 @@
 package com.xupu.common.po;
 
 import com.google.gson.annotations.Expose;
-import com.xupu.usermanager.po.User;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.lang.management.LockInfo;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "o_redis")
 public class Redis {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

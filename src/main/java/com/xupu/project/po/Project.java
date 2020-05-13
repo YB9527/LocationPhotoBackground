@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "o_project")
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,7 +38,7 @@ public class Project {
      * 一个人可以做多个项目
      */
     @ManyToMany
-    @JoinTable(name = "project_user",joinColumns = @JoinColumn(name = "project_id"),
+    @JoinTable(name = "o_project_user",joinColumns = @JoinColumn(name = "project_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     @Expose
     private  List<User> users;

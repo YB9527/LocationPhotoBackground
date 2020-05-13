@@ -60,7 +60,7 @@ public class UserController {
     }
 
     /**
-     * 查找所有的用户
+     * 查找所有的注册用户
      *
      * @return
      */
@@ -78,8 +78,6 @@ public class UserController {
             userService.saveUsers(users);
             userList = userService.findRegistUsers();
         }
-
-
         return resultDataService.getSuccessResultData(userList);
     }
 
@@ -90,7 +88,6 @@ public class UserController {
      */
     @RequestMapping(value = "/findusers")
     public ResultData findusers() {
-
 
         List<User> userList = userService.findAll();
         return resultDataService.getSuccessResultData(userList);

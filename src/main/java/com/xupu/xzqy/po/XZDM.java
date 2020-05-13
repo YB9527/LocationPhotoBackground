@@ -12,6 +12,7 @@ import java.util.List;
  * 行政区域
  */
 @Entity
+@Table(name = "o_xzdm")
 public class XZDM {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

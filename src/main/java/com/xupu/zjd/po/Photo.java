@@ -4,12 +4,12 @@ import com.google.gson.annotations.Expose;
 import com.xupu.common.tools.FileTool;
 
 import javax.persistence.*;
-import java.util.Date;
 
 /**
  * 照片
  */
 @Entity
+@Table(name = "o_photo")
 public class Photo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

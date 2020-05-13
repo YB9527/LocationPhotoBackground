@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-//@Table(name = "userTab")
+@Table(name = "o_user")
 public class User {
     @Expose
     @Id
@@ -54,6 +54,7 @@ public class User {
     private String email;
 
 
+
     /**
      * 一个人管理的行政区域
      */
@@ -88,6 +89,8 @@ public class User {
         this.password = password;
         this.email = email;
     }
+
+
 
     public List<Project> getProjects() {
         if(projects == null){

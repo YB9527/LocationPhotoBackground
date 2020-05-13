@@ -15,10 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class XZDMService implements IXZDMService {
@@ -195,14 +192,18 @@ public class XZDMService implements IXZDMService {
     public void deleteXZDMs(List<XZDM> xzdmList) {
         //只检查在宅基地中没有用到的
         List<ZJD> zjds = zjdService.findAll();
-        Map<String, List<ZJD>> zjdDJZQDMMap = ReflectTool.getListIDMap("getDJZQDM", zjds);
-        Set<String> hasejzd_djzqdm = zjdDJZQDMMap.keySet();
+
+        Set<Long> xzdmids = new HashSet<>();
+        for (int i = 0; i < zjds.size(); i++) {
+           xzdmids.add(zjds.get(i).getXzdmid());
+        }
         for (XZDM xzdm : xzdmList) {
-            String djzqdm = xzdm.getDJZQDM();
-            if (!hasejzd_djzqdm.contains(djzqdm)) {
+            if(!xzdmids.contains(xzdm.getId())){
                 xzdmRepository.delete(xzdm);
             }
         }
+
+
     }
 
     @Override

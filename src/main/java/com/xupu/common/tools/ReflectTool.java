@@ -16,28 +16,29 @@ public class ReflectTool {
      * @param <T>
      * @return
      */
-    public static <T> Map<String, List<T>> getListIDMap(String methodName, List<T> list) {
-        Map<String, List<T>> map = new HashMap<>();
+    public static <T1,T2> Map<T1, List<T2>> getListIDMap(String methodName, List<T2> list) {
+        Map<T1, List<T2>> map = new HashMap<>();
         if (Tool.isEmpty(list)) {
             return map;
         }
-        List<T> ts;
+        List<T2> ts;
         Class tClass = list.get(0).getClass();
         Method m = null;
         try {
             m = tClass.getMethod(methodName);
-            for (T t : list
+            for (T2 t : list
             ) {
-                String key = m.invoke(t).toString();
-                ts = map.get(key);
-                if (ts == null) {
-                    ts = new ArrayList<>();
-                    ts.add(t);
-                    map.put(key, ts);
-                } else {
-                    ts.add(t);
+                Object key = m.invoke(t);
+                if(key != null){
+                    ts = map.get(key);
+                    if (ts == null) {
+                        ts = new ArrayList<>();
+                        ts.add(t);
+                        map.put((T1)key, ts);
+                    } else {
+                        ts.add(t);
+                    }
                 }
-
 
             }
         } catch (Exception e) {

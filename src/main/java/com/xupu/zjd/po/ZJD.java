@@ -1,6 +1,7 @@
 package com.xupu.zjd.po;
 
 import com.google.gson.annotations.Expose;
+import com.xupu.common.po.Task;
 import com.xupu.usermanager.po.User;
 import com.xupu.xzqy.po.XZDM;
 
@@ -12,13 +13,14 @@ import java.util.List;
  * 宅基地
  */
 @Entity
+@Table(name = "o_zjd")
 public class ZJD {
     @Expose
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "objectid")//columnDefinition="表注释"
     private Long id;
-   // @Column(nullable = false)
+    // @Column(nullable = false)
     @Expose
     private String ZDNUM;
     //@Column(nullable = false)
@@ -29,9 +31,6 @@ public class ZJD {
     @Lob
     @Expose
     private String geometry;
-
-
-
 
 
     /**
@@ -55,17 +54,37 @@ public class ZJD {
     @Expose
     private User usertask;
 
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = true)
+    @Expose
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = false)
     private XZDM xzdm;
 
 
     @Expose
     private Long xzdmid;
 
+    /**
+     *
+     */
+    @Expose
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Task task;
+
+
+    public Task getTask() {
+        if (task == null) {
+            task = new Task();
+        }
+        return task;
+    }
+
+    public void setTask(Task task) {
+        this.task = task;
+    }
 
     public Long getXzdmid() {
         return xzdmid;
     }
+
 
     public void setXzdmid(Long xzdmid) {
         this.xzdmid = xzdmid;
@@ -87,7 +106,6 @@ public class ZJD {
     public void setUpload(Boolean upload) {
         isUpload = true;
     }
-
 
 
     public String getGeometry() {

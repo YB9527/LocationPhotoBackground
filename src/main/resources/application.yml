@@ -12,15 +12,17 @@ spring:
       max-file-size: 100MB  #单个文件的最大上限
       max-request-size: 100MB #单个请求的文件总大小上限
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/locationphoto?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
-    username: root
+    url: jdbc:postgresql://127.0.0.1:5432/locationphoto #?currentSchema=sde
+    #url: jdbc:postgresql://192.168.30.18:5432/locationphoto #?currentSchema=sde
+    username: postgres
+    #password: 1
     password: 1234
+    driver-class-name: org.postgresql.Driver
   jpa:
-    properties:
+      database: postgresql
+      show-sql: true
       hibernate:
-        hbm2ddl:
-          auto: update
-        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
-        format_sql: true
-    show-sql: false
+        ddl-auto: update
+      properties:
+        hibernate:
+          dialect: org.hibernate.spatial.dialect.postgis.PostgisDialect

@@ -7,10 +7,11 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 import java.util.Optional;
 
-public interface UserRepository extends JpaRepository<User,Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
     User findByAccount(String account);
+
     Optional<User> findById(Long id);
 
-    @Query(value = "SELECT * FROM user WHERE  `level` is not null", nativeQuery = true)
+    @Query(value = "SELECT * FROM o_user WHERE  level IS NOT null ", nativeQuery = true)
     List<User> findRegistUsers();
 }
