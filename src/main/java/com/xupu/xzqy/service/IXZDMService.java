@@ -2,7 +2,6 @@ package com.xupu.xzqy.service;
 
 import com.xupu.common.po.ResultData;
 import com.xupu.xzqy.po.XZDM;
-import com.xupu.zjd.po.ZJD;
 
 import java.util.List;
 import java.util.Map;
@@ -86,12 +85,7 @@ public interface IXZDMService {
      */
     ResultData importZJDs(Long projectid, List<XZDM> xzdmList);
 
-    /**
-     * 得到行政区内的所有宅基地
-     * @param xzdmList
-     * @return
-     */
-    List<ZJD> getZJDAll(List<XZDM> xzdmList);
+
 
     /**
      * 通过项目id 得到行政区域

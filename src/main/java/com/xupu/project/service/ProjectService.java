@@ -130,6 +130,12 @@ public class ProjectService implements IProjectService {
         Project project = projectRepository.findById(idL).get();
         return project;
     }
+
+    @Override
+    public void addMedia(Project project) {
+        projectRepository.save(project);
+    }
+
     /**
      * 检查 项目
      *

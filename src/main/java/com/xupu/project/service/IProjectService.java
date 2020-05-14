@@ -49,4 +49,5 @@ public interface IProjectService {
     Project findById(Long idL);
 
 
+    void addMedia(Project project);
 }

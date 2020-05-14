@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -132,8 +133,12 @@ public class XZDMController {
     public ResultData saveSetUser(String xzdms,Long userid) {
         List<XZDM> xzdmList = new Gson().fromJson(xzdms, new TypeToken<List<XZDM>>() {
         }.getType());
-
-        List<ZJD> zjds = xzdmService.getZJDAll(xzdmList);
+        List<Long> xzdmids = new ArrayList<>();
+        for (XZDM xzdm :xzdmList
+             ) {
+            xzdmids.add(xzdm.getId());
+        }
+        List<ZJD> zjds = zjdService.findByXZDMIds(xzdmids);
         return zjdService.SetUser(userid,zjds);
 
     }

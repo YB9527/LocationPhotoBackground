@@ -1,7 +1,7 @@
 package com.xupu.zjd.po;
 
+import com.alibaba.fastjson.JSONObject;
 import com.google.gson.annotations.Expose;
-import com.xupu.common.po.Task;
 import com.xupu.usermanager.po.User;
 import com.xupu.xzqy.po.XZDM;
 
@@ -18,7 +18,7 @@ public class ZJD {
     @Expose
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "objectid")//columnDefinition="表注释"
+    @Column(name = "id")//columnDefinition="表注释"
     private Long id;
     // @Column(nullable = false)
     @Expose
@@ -32,6 +32,15 @@ public class ZJD {
     @Expose
     private String geometry;
 
+    private JSONObject jsonObject;
+
+    public JSONObject getJsonObject() {
+        return jsonObject;
+    }
+
+    public void setJsonObject(JSONObject jsonObject) {
+        this.jsonObject = jsonObject;
+    }
 
     /**
      * 地块是否已经上传,服务器里面的都是true,因为已经存在了
@@ -49,10 +58,7 @@ public class ZJD {
     @Expose
     private User usercreate;
 
-    //任务分配者
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = true)
-    @Expose
-    private User usertask;
+
 
     @Expose
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = false)
@@ -66,19 +72,16 @@ public class ZJD {
      *
      */
     @Expose
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Task task;
+    @OneToOne(cascade=CascadeType.ALL, optional = true)//People是关系的维护端
+    private ZJDTask zjdtask;
 
 
-    public Task getTask() {
-        if (task == null) {
-            task = new Task();
-        }
-        return task;
+    public ZJDTask getZjdtask() {
+        return zjdtask;
     }
 
-    public void setTask(Task task) {
-        this.task = task;
+    public void setZjdtask(ZJDTask zjdtask) {
+        this.zjdtask = zjdtask;
     }
 
     public Long getXzdmid() {
@@ -149,13 +152,7 @@ public class ZJD {
         this.usercreate = usercreate;
     }
 
-    public User getUsertask() {
-        return usertask;
-    }
 
-    public void setUsertask(User usertask) {
-        this.usertask = usertask;
-    }
 
     public List<Photo> getPhotos() {
         if (photos == null) {

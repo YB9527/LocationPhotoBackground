@@ -171,15 +171,7 @@ public class XZDMService implements IXZDMService {
         return saveZJDs(xzdmList);
     }
 
-    @Override
-    public List<ZJD> getZJDAll(List<XZDM> xzdmList) {
-        List<ZJD> zjds = new ArrayList<>();
-        for (XZDM xzdm : xzdmList) {
 
-            zjds.addAll(zjdService.findByXZDMid(xzdm.getId()));
-        }
-        return zjds;
-    }
 
     @Override
     public List<XZDM> findByProjectId(Long projectid) {

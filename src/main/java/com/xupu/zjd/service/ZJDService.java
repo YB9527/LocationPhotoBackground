@@ -4,6 +4,7 @@ package com.xupu.zjd.service;
 import com.alibaba.fastjson.JSONObject;
 import com.xupu.common.YBException.ZJDException;
 import com.xupu.common.po.ResultData;
+import com.xupu.common.service.ITaskService;
 import com.xupu.common.service.ResultDataService;
 import com.xupu.common.tools.JSONTool;
 import com.xupu.common.tools.ReflectTool;
@@ -17,11 +18,13 @@ import com.xupu.xzqy.po.XZDM;
 import com.xupu.xzqy.service.IXZDMService;
 import com.xupu.zjd.dao.ZJDRepository;
 import com.xupu.zjd.po.ZJD;
+import com.xupu.zjd.po.ZJDTask;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +39,8 @@ public class ZJDService implements IZJDService {
     private IProjectService projectService;
     @Autowired
     private IUserService userService;
+    @Autowired
+    private ITaskService taskService;
 
     private ResultDataService resultDataService = ResultDataService.getResultDataService();
 
@@ -172,8 +177,9 @@ public class ZJDService implements IZJDService {
         return list;
     }
 
+    @Transient
     @Override
-    public List<ZJD> findByXZDMid(Long xzdmid) {
+    public List<ZJD> findByXZDMId(Long xzdmid) {
         return zjdRepository.findByXzdmid(xzdmid);
     }
 
@@ -264,14 +270,24 @@ public class ZJDService implements IZJDService {
         zjdRepository.deleteById(id);
     }
 
+    @Transactional
     @Override
     public ResultData SetUser(Long userid, List<ZJD> zjds) {
-        if(Tool.isEmpty(zjds)){
-            return  resultDataService.getErrorResultData("没有选择任何的宅基地");
+        if (Tool.isEmpty(zjds)) {
+            return resultDataService.getErrorResultData("没有选择任何的宅基地");
         }
         User user = userService.findById(userid);
         for (ZJD zjd : zjds) {
-            zjd.setUsertask(user);
+            ZJDTask task = zjd.getZjdtask();
+            if (task == null) {
+                task = new ZJDTask();
+                user.getTasks().add(task);
+                task.setUser(user);
+                zjd.setZjdtask(task);
+            }else{
+                task.setUser(user);
+                taskService.save(task);
+            }
         }
         zjdRepository.saveAll(zjds);
         return resultDataService.getSuccessResultData("");

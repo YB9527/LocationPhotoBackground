@@ -1,9 +1,13 @@
 package com.xupu.common.po;
 
 import com.google.gson.annotations.Expose;
-import com.xupu.zjd.po.ZJD;
+import com.xupu.common.tools.DateTool;
+import com.xupu.project.po.Project;
+import com.xupu.usermanager.po.User;
 
 import javax.persistence.*;
+import java.util.Date;
+import java.util.Objects;
 
 /**
  * 任务
@@ -16,11 +20,11 @@ public class Task  {
     @Expose
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "objectid")//columnDefinition="表注释"
+    @Column(name = "id")//columnDefinition="表注释"
     private Long id;
 
     /**
-     * 任务状态 0：完成，1、未开始， 2：进行中，3：异常状态
+     * 任务状态 0：完成，1、进行中,3：异常状态
      */
     @Expose
     private int status;
@@ -39,16 +43,30 @@ public class Task  {
      */
     @Expose
     private String message;
-    /**
-     * 绑定的宅基地
-     */
-    @OneToOne(cascade= CascadeType.ALL,fetch= FetchType.LAZY)
-    private ZJD zjd;
 
+
+    @ManyToOne(cascade={CascadeType.REFRESH},optional=false)
+    private Project project;
+
+
+    //任务分配者
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = false)
+    @Expose
+    private User user;
 
     public Task(){
         this.status =1;
+        this.createdate = DateTool.dataFormat(new Date());
     }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
     public int getStatus() {
         return status;
     }
@@ -57,12 +75,21 @@ public class Task  {
         this.status = status;
     }
 
-    public ZJD getZjd() {
-        return zjd;
+
+    public Long getId() {
+        return id;
     }
 
-    public void setZjd(ZJD zjd) {
-        this.zjd = zjd;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     /**
@@ -104,5 +131,16 @@ public class Task  {
         this.message = message;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Task task = (Task) o;
+        return Objects.equals(id, task.id);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

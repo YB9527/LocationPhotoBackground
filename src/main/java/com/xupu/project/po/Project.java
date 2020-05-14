@@ -1,6 +1,8 @@
 package com.xupu.project.po;
 
 import com.google.gson.annotations.Expose;
+import com.xupu.common.po.Media;
+import com.xupu.common.po.Task;
 import com.xupu.usermanager.po.User;
 import com.xupu.xzqy.po.XZDM;
 
@@ -24,6 +26,7 @@ public class Project {
     @Expose
     private String notes;
 
+
     /**
      * 顶级行政代码， 导入的数据只能包含这个代码，
      */
@@ -42,6 +45,32 @@ public class Project {
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     @Expose
     private  List<User> users;
+
+
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Expose
+    private List<Media> medias;
+
+
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Expose
+    private List<Task> tasks;
+
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
+    }
+
+    public List<Media> getMedias() {
+        return medias;
+    }
+
+    public void setMedias(List<Media> medias) {
+        this.medias = medias;
+    }
 
     public List<User> getUsers() {
         return users;

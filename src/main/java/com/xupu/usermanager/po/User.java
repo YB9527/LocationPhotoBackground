@@ -1,6 +1,7 @@
 package com.xupu.usermanager.po;
 
 import com.google.gson.annotations.Expose;
+import com.xupu.common.po.Task;
 import com.xupu.project.po.Project;
 import com.xupu.zjd.po.ZJD;
 
@@ -68,8 +69,9 @@ public class User {
 
 
     //所拥有的任务
-    @OneToMany(mappedBy = "usertask",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-    private List<ZJD> zjdsTask;
+    @OneToMany(mappedBy = "user",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+    private List<Task> tasks;
+
 
     /**
      * 一个人可以做多个项目
@@ -146,13 +148,7 @@ public class User {
         this.zjdsCreate = zjdsCreate;
     }
 
-    public List<ZJD> getZjdsTask() {
-        return zjdsTask;
-    }
 
-    public void setZjdsTask(List<ZJD> zjdsTask) {
-        this.zjdsTask = zjdsTask;
-    }
 
     public String getEmail() {
         return email;
@@ -179,6 +175,17 @@ public class User {
     }
 
 
+    public List<Task> getTasks() {
+        if(tasks == null){
+            tasks = new ArrayList<>();
+        }
+        return tasks;
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -190,7 +197,7 @@ public class User {
                 ", level=" + level +
                 ", email='" + email + '\'' +
                 ", zjdsCreate=" + zjdsCreate +
-                ", zjdsTask=" + zjdsTask +
+                ", tasks=" + tasks +
                 ", projects=" + projects +
                 '}';
     }

@@ -16,7 +16,7 @@ public class ReflectTool {
      * @param <T>
      * @return
      */
-    public static <T1,T2> Map<T1, List<T2>> getListIDMap(String methodName, List<T2> list) {
+    public static <T1, T2> Map<T1, List<T2>> getListIDMap(String methodName, List<T2> list) {
         Map<T1, List<T2>> map = new HashMap<>();
         if (Tool.isEmpty(list)) {
             return map;
@@ -29,12 +29,12 @@ public class ReflectTool {
             for (T2 t : list
             ) {
                 Object key = m.invoke(t);
-                if(key != null){
+                if (key != null) {
                     ts = map.get(key);
                     if (ts == null) {
                         ts = new ArrayList<>();
                         ts.add(t);
-                        map.put((T1)key, ts);
+                        map.put((T1) key, ts);
                     } else {
                         ts.add(t);
                     }
@@ -85,26 +85,22 @@ public class ReflectTool {
         for (Method setM : methodCustom.setMehods) {
             try {
                 Object obj = getMethodName.get(setM.getName().replace("set", "get")).invoke(newT, null);
-                if (obj != null) {
-                    if (obj.getClass().isPrimitive()) {
+                String name = setM.getParameterTypes()[0].getName();
+                switch (name) {
+                    case "float":
+                    case "int":
+                    case "boolean":
+                    case "java.lang.Double":
+                    case "java.lang.Long":
+                    case "java.lang.Integer":
+                    case "java.lang.Float":
+                    case "java.lang.String":
+                    case "java.lang.Boolean":
                         setM.invoke(oldT, obj);
-                    }
-                    switch (obj.getClass().getName()) {
-                        case "Double":
-                        case "Long":
-                        case "Integer":
-                        case "Float":
-                        case "String":
-                        case "Boolean":
-                            setM.invoke(oldT, obj);
-                            break;
-                        default:
-                            break;
-                    }
-                } else {
-                    setM.invoke(oldT, obj);
+                        break;
+                    default:
+                        break;
                 }
-
             } catch (Exception e) {
                 e.printStackTrace();
             }

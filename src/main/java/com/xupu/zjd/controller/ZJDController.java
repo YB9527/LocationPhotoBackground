@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -83,7 +84,19 @@ public class ZJDController {
         ResultData resultData = resultDataService.getSuccessResultData(zjds);
         return resultData;
     }
-
+    /**
+     * 根据行政代码 查找 符合的宅基地
+     *
+     * @return
+     */
+    @RequestMapping("/findbyxzdmid")
+    public ResultData findByXZDMId(Long xzdmid) {
+        List<Long> xzdmidList = new ArrayList<>();
+        xzdmidList.add(xzdmid);
+        List<ZJD> zjds = zjdService.findByXZDMIds(xzdmidList);
+        ResultData resultData = resultDataService.getSuccessResultData(zjds);
+        return resultData;
+    }
     /**
      * 根据 ZDNUM 查询 zjd
      *

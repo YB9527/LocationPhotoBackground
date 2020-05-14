@@ -50,7 +50,7 @@ public interface IZJDService {
      * @return
      */
     List<ZJD> findByXZDMIds(List<Long> xzdmids);
-    List<ZJD> findByXZDMid(Long xzdmid);
+    List<ZJD> findByXZDMId(Long xzdmid);
 
     /**
      * 修改在基地
