@@ -1,7 +1,6 @@
-package com.xupu.common.po;
+package com.xupu.project.po;
 
 import com.google.gson.annotations.Expose;
-import com.xupu.project.po.Project;
 
 import javax.persistence.*;
 import java.util.Objects;

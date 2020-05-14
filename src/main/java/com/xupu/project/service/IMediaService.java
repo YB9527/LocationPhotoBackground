@@ -1,7 +1,7 @@
-package com.xupu.common.service;
+package com.xupu.project.service;
 
 import com.alibaba.fastjson.JSONObject;
-import com.xupu.common.po.Media;
+import com.xupu.project.po.Media;
 import com.xupu.common.po.ResultData;
 import org.springframework.stereotype.Service;
 

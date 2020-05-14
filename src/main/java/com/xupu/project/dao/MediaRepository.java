@@ -1,6 +1,6 @@
-package com.xupu.common.dao;
+package com.xupu.project.dao;
 
-import com.xupu.common.po.Media;
+import com.xupu.project.po.Media;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MediaRepository extends JpaRepository<Media,Long> {

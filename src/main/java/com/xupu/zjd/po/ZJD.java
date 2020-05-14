@@ -2,6 +2,7 @@ package com.xupu.zjd.po;
 
 import com.alibaba.fastjson.JSONObject;
 import com.google.gson.annotations.Expose;
+import com.xupu.project.po.Task;
 import com.xupu.usermanager.po.User;
 import com.xupu.xzqy.po.XZDM;
 
@@ -73,15 +74,20 @@ public class ZJD {
      */
     @Expose
     @OneToOne(cascade=CascadeType.ALL, optional = true)//People是关系的维护端
-    private ZJDTask zjdtask;
+    private Task task;
 
 
-    public ZJDTask getZjdtask() {
-        return zjdtask;
+    @OneToMany(mappedBy = "zjd", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Expose
+    private List<ZJDMedia> zjdMedias;
+
+
+    public Task getTask() {
+        return task;
     }
 
-    public void setZjdtask(ZJDTask zjdtask) {
-        this.zjdtask = zjdtask;
+    public void setTask(Task task) {
+        this.task = task;
     }
 
     public Long getXzdmid() {

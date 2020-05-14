@@ -4,21 +4,21 @@ package com.xupu.zjd.service;
 import com.alibaba.fastjson.JSONObject;
 import com.xupu.common.YBException.ZJDException;
 import com.xupu.common.po.ResultData;
-import com.xupu.common.service.ITaskService;
 import com.xupu.common.service.ResultDataService;
 import com.xupu.common.tools.JSONTool;
 import com.xupu.common.tools.ReflectTool;
 import com.xupu.common.tools.RepositoryTool;
 import com.xupu.common.tools.Tool;
 import com.xupu.project.po.Project;
+import com.xupu.project.po.Task;
 import com.xupu.project.service.IProjectService;
+import com.xupu.project.service.ITaskService;
 import com.xupu.usermanager.po.User;
 import com.xupu.usermanager.service.IUserService;
 import com.xupu.xzqy.po.XZDM;
 import com.xupu.xzqy.service.IXZDMService;
 import com.xupu.zjd.dao.ZJDRepository;
 import com.xupu.zjd.po.ZJD;
-import com.xupu.zjd.po.ZJDTask;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -278,18 +278,19 @@ public class ZJDService implements IZJDService {
         }
         User user = userService.findById(userid);
         for (ZJD zjd : zjds) {
-            ZJDTask task = zjd.getZjdtask();
+            Task task = zjd.getTask();
             if (task == null) {
-                task = new ZJDTask();
+                task = new Task();
                 user.getTasks().add(task);
                 task.setUser(user);
-                zjd.setZjdtask(task);
+                zjd.setTask(task);
             }else{
                 task.setUser(user);
                 taskService.save(task);
             }
         }
         zjdRepository.saveAll(zjds);
+
         return resultDataService.getSuccessResultData("");
     }
 }

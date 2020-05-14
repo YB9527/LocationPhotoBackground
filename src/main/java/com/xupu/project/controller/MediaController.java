@@ -1,8 +1,8 @@
-package com.xupu.common.controller;
+package com.xupu.project.controller;
 
-import com.xupu.common.po.Media;
+import com.xupu.project.po.Media;
 import com.xupu.common.po.ResultData;
-import com.xupu.common.service.IMediaService;
+import com.xupu.project.service.IMediaService;
 import com.xupu.common.service.ResultDataService;
 import com.xupu.common.tools.Tool;
 import org.springframework.beans.factory.annotation.Autowired;

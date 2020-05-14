@@ -1,7 +1,7 @@
 package com.xupu.usermanager.po;
 
 import com.google.gson.annotations.Expose;
-import com.xupu.common.po.Task;
+import com.xupu.project.po.Task;
 import com.xupu.project.po.Project;
 import com.xupu.zjd.po.ZJD;
 

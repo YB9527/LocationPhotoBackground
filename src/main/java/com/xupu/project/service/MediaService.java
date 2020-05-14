@@ -1,12 +1,12 @@
-package com.xupu.common.service;
+package com.xupu.project.service;
 
 import com.alibaba.fastjson.JSONObject;
-import com.xupu.common.dao.MediaRepository;
-import com.xupu.common.po.Media;
+import com.xupu.common.service.ResultDataService;
+import com.xupu.project.dao.MediaRepository;
+import com.xupu.project.po.Media;
 import com.xupu.common.po.ResultData;
 import com.xupu.common.tools.ReflectTool;
 import com.xupu.project.po.Project;
-import com.xupu.project.service.IProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
